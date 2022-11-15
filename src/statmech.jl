@@ -1,4 +1,4 @@
-export find_neighbors, find_neighbor_spins, hamiltonian, partition_function
+export find_neighbors, find_neighbor_spins, energy, partition_function
 
 function find_neighbors(lattice::Lattice, index::CartesianIndex)
     width, height = size(lattice)
@@ -16,14 +16,13 @@ end
 find_neighbor_spins(lattice::Lattice, i, j) =
     find_neighbor_spins(lattice, CartesianIndex(i, j))
 
-function hamiltonian(lattice::Lattice, i::CartesianIndex, J, B=0)
+function energy(lattice::Lattice, i::CartesianIndex, J, B=0)
     ∑ⱼsⱼ = sum(find_neighbor_spins(lattice, i))
     sᵢ = lattice[i]
     return -(J / 2 * ∑ⱼsⱼ + B) * sᵢ
 end
-hamiltonian(lattice::Lattice, i, j, J, B=0) =
-    hamiltonian(lattice, CartesianIndex(i, j), J, B)
-hamiltonian(lattice::Lattice, J, B=0) =
-    sum(hamiltonian(lattice, index, J, B) for index in eachindex(lattice))
+energy(lattice::Lattice, i, j, J, B=0) = energy(lattice, CartesianIndex(i, j), J, B)
+energy(lattice::Lattice, J, B=0) =
+    sum(energy(lattice, index, J, B) for index in eachindex(lattice))
 
-partition_function(lattice::Lattice, args...) = exp(-hamiltonian(lattice, args...))
+partition_function(lattice::Lattice, args...) = exp(-energy(lattice, args...))
