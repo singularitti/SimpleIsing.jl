@@ -16,15 +16,16 @@ end
 find_neighbor_spins(lattice::Lattice, i, j) =
     find_neighbor_spins(lattice, CartesianIndex(i, j))
 
-function hamiltonian(lattice::Lattice, i::Integer, j::Integer, coupling, magnetic_field=0)
-    neighbor_spins = find_neighbor_spins(lattice, i, j)
-    spin = lattice[i, j]
+function hamiltonian(lattice::Lattice, I::CartesianIndex, coupling, magnetic_field=0)
+    neighbor_spins = find_neighbor_spins(lattice, I)
+    spin = lattice[I]
     return -coupling / 2 * neighbor_spins .* spin - magnetic_field * spin
 end
+hamiltonian(lattice::Lattice, i::Integer, j::Integer, coupling, magnetic_field=0) =
+    hamiltonian(lattice, CartesianIndex(i, j), coupling, magnetic_field)
 function hamiltonian(lattice::Lattice, coupling, magnetic_field=0)
     return sum(
-        hamiltonian(lattice, i, j, coupling, magnetic_field) for
-        (i, j) in eachindex(lattice)
+        hamiltonian(lattice, I, coupling, magnetic_field) for I in eachindex(lattice)
     )
 end
 
