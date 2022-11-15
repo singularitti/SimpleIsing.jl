@@ -10,7 +10,7 @@ end
 Lattice(spins::AbstractMatrix{Bool}) = Lattice{size(spins, 1),size(spins, 2)}(spins)
 
 struct Evolution{S1,S2,T}
-    history::MArray{Tuple{S1,S2},Bool,3}
+    history::MArray{Tuple{S1,S2,T},Bool,3}
 end
 
 function Base.show(io::IO, lattice::Lattice)
