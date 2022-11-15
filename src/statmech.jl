@@ -1,4 +1,6 @@
-export find_neighbors, find_neighbor_spins, energy, partition_function
+using Statistics: mean
+
+export find_neighbors, find_neighbor_spins, energy, partition_function, magnetization
 
 function find_neighbors(lattice::Lattice, index::CartesianIndex)
     width, height = size(lattice)
@@ -26,3 +28,5 @@ energy(lattice::Lattice, J, B=0) =
     sum(energy(lattice, index, J, B) for index in eachindex(lattice))
 
 partition_function(lattice::Lattice, args...) = exp(-energy(lattice, args...))
+
+magnetization(lattice::Lattice) = mean(lattice)
