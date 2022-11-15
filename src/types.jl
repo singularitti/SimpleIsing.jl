@@ -15,6 +15,18 @@ Evolution(history::AbstractArray{Bool,3}) =
 Evolution(history::AbstractVector{<:Lattice}) =
     Evolution(reduce((x, y) -> cat(x, y; dims=3), history))
 
+Base.parent(lattice::Lattice) = lattice.spins
+Base.parent(evolution::Evolution) = evolution.history
+
+Base.size(lattice::Lattice) = size(parent(lattice))
+Base.size(evolution::Evolution) = size(parent(evolution))
+
+Base.getindex(lattice::Lattice, I...) = getindex(parent(lattice), I...)
+Base.getindex(evolution::Evolution, I...) = getindex(parent(evolution), I...)
+
+Base.setindex!(lattice::Lattice, v, I...) = setindex!(parent(lattice), v, I...)
+Base.setindex!(evolution::Evolution, v, I...) = setindex!(parent(evolution), v, I...)
+
 function Base.show(io::IO, lattice::Lattice)
     if get(io, :compact, false) || get(io, :typeinfo, nothing) == typeof(lattice)
         Base.show_default(IOContext(io, :limit => true), lattice)  # From https://github.com/mauro3/Parameters.jl/blob/ecbf8df/src/Parameters.jl#L556
