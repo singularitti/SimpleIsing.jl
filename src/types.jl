@@ -26,14 +26,3 @@ Base.getindex(evolution::Evolution, I...) = getindex(parent(evolution), I...)
 
 Base.setindex!(lattice::Lattice, v, I...) = setindex!(parent(lattice), v, I...)
 Base.setindex!(evolution::Evolution, v, I...) = setindex!(parent(evolution), v, I...)
-
-function Base.show(io::IO, lattice::Lattice)
-    if get(io, :compact, false) || get(io, :typeinfo, nothing) == typeof(lattice)
-        Base.show_default(IOContext(io, :limit => true), lattice)  # From https://github.com/mauro3/Parameters.jl/blob/ecbf8df/src/Parameters.jl#L556
-    else
-        println(io, string(typeof(lattice)))
-        for row in eachrow(lattice.spins)
-            println(io, ' ', join(Int.(row), ' '^2))
-        end
-    end
-end
