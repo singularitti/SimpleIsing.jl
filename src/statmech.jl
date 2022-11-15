@@ -26,4 +26,4 @@ hamiltonian(lattice::Lattice, i, j, J, B=0) =
 hamiltonian(lattice::Lattice, J, B=0) =
     sum(hamiltonian(lattice, index, J, B) for index in eachindex(lattice))
 
-partition_function(lattice::Lattice, J, B=0) = exp(-hamiltonian(lattice, J, B))
+partition_function(lattice::Lattice, args...) = exp(-hamiltonian(lattice, args...))
