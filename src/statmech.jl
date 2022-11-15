@@ -1,11 +1,13 @@
 export find_neighbors, find_neighbor_spins, hamiltonian, partition_function
 
-function find_neighbors(lattice::Lattice, i, j)
+function find_neighbors(lattice::Lattice, I::CartesianIndex)
     width, height = size(lattice)
-    return (mod(i + 1, width), j),
-    (mod(i - 1, width), j), (i, mod(j + 1, height)),
-    (i, mod(j - 1, height))
+    i, j = Tuple(I)  # See https://discourse.julialang.org/t/unpacking-cartesianindex/27374/6
+    return CartesianIndex(mod(i + 1, width), j),
+    CartesianIndex(mod(i - 1, width), j), CartesianIndex(i, mod(j + 1, height)),
+    CartesianIndex(i, mod(j - 1, height))
 end
+find_neighbors(lattice::Lattice, i, j) = find_neighbors(lattice, CartesianIndex(i, j))
 
 function find_neighbor_spins(lattice::Lattice, i, j)
     neighbors = find_neighbors(lattice, i, j)
