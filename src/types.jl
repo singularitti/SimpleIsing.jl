@@ -2,16 +2,17 @@ using StaticArrays: MMatrix, MArray
 
 export Lattice, Evolution
 
-struct Lattice{S1,S2} <: AbstractMatrix{Bool}
-    spins::MMatrix{S1,S2,Bool}
+struct Lattice{S1,S2,T} <: AbstractMatrix{T}
+    spins::MMatrix{S1,S2,T}
 end
-Lattice(spins::AbstractMatrix{Bool}) = Lattice{size(spins, 1),size(spins, 2)}(spins)
+Lattice(spins::AbstractMatrix) = Lattice{size(spins, 1),size(spins, 2),eltype(spins)}(spins)
 
-struct Evolution{S1,S2,T} <: AbstractArray{Bool,3}
-    history::MArray{Tuple{S1,S2,T},Bool,3}
+struct Evolution{S1,S2,S3,T} <: AbstractArray{T,3}
+    history::MArray{Tuple{S1,S2,S3},T,3}
 end
-Evolution(history::AbstractArray{Bool,3}) =
-    Evolution{size(history, 1),size(history, 2),size(history, 3)}(history)
+Evolution(history::AbstractArray) =
+    Evolution{size(history, 1),size(history, 2),size(history, 3),eltype(history)}(history)
+# See https://discourse.julialang.org/t/turn-vector-of-matrices-into-3d-array/69777/6
 Evolution(history::AbstractVector{<:Lattice}) =
     Evolution(reduce((x, y) -> cat(x, y; dims=3), history))
 
