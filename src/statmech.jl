@@ -24,6 +24,5 @@ function hamiltonian(lattice::Lattice, coupling, magnetic_field=0)
     )
 end
 
-function partition_function(lattice::Lattice, coupling, magnetic_field=0)
-    return exp(-hamiltonian(lattice, coupling, magnetic_field))
-end
+partition_function(lattice::Lattice, coupling, magnetic_field=0) =
+    exp(-hamiltonian(lattice, coupling, magnetic_field))
