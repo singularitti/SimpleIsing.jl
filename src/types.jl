@@ -10,6 +10,10 @@ Lattice(spins::AbstractMatrix{Bool}) = Lattice{size(spins, 1),size(spins, 2)}(sp
 struct Evolution{S1,S2,T} <: AbstractArray{Bool,3}
     history::MArray{Tuple{S1,S2,T},Bool,3}
 end
+Evolution(history::AbstractArray{Bool,3}) =
+    Evolution{size(history, 1),size(history, 2),size(history, 3)}(history)
+Evolution(history::AbstractVector{<:Lattice}) =
+    Evolution(reduce((x, y) -> cat(x, y; dims=3), history))
 
 function Base.show(io::IO, lattice::Lattice)
     if get(io, :compact, false) || get(io, :typeinfo, nothing) == typeof(lattice)
