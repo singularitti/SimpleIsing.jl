@@ -17,9 +17,9 @@ find_neighbor_spins(lattice::Lattice, i, j) =
     find_neighbor_spins(lattice, CartesianIndex(i, j))
 
 function hamiltonian(lattice::Lattice, I::CartesianIndex, coupling, magnetic_field=0)
-    neighbor_spins = find_neighbor_spins(lattice, I)
-    spin = lattice[I]
-    return -(coupling / 2 * sum(neighbor_spins) + magnetic_field) * spin
+    ∑ⱼsⱼ = sum(find_neighbor_spins(lattice, I))
+    sᵢ = lattice[I]
+    return -(coupling / 2 * ∑ⱼsⱼ + magnetic_field) * sᵢ
 end
 hamiltonian(lattice::Lattice, i::Integer, j::Integer, coupling, magnetic_field=0) =
     hamiltonian(lattice, CartesianIndex(i, j), coupling, magnetic_field)
