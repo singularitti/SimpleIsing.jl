@@ -9,10 +9,12 @@ function find_neighbors(lattice::Lattice, I::CartesianIndex)
 end
 find_neighbors(lattice::Lattice, i, j) = find_neighbors(lattice, CartesianIndex(i, j))
 
-function find_neighbor_spins(lattice::Lattice, i, j)
-    neighbors = find_neighbors(lattice, i, j)
+function find_neighbor_spins(lattice::Lattice, I::CartesianIndex)
+    neighbors = find_neighbors(lattice, I)
     return map(Base.Fix1(getindex, lattice), neighbors)
 end
+find_neighbor_spins(lattice::Lattice, i, j) =
+    find_neighbor_spins(lattice, CartesianIndex(i, j))
 
 function hamiltonian(lattice::Lattice, i::Integer, j::Integer, coupling, magnetic_field=0)
     neighbor_spins = find_neighbor_spins(lattice, i, j)
