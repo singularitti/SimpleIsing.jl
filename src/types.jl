@@ -2,7 +2,14 @@ export Lattice, Evolution
 
 struct Lattice{T} <: AbstractMatrix{T}
     spins::Matrix{T}
+    states::NTuple{2,T}
+    function Lattice{T}(spins) where {T}
+        states = extrema(spins)
+        @assert all(spin in states for spin in spins)
+        return new(spins, states)
+    end
 end
+Lattice(spins::AbstractMatrix) = Lattice{eltype(spins)}(collect(spins))
 
 struct Evolution{T} <: AbstractArray{T,3}
     history::Array{T,3}
