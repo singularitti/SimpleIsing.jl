@@ -18,3 +18,7 @@ function simulate!(lattice::Lattice, β, J, B, ::Basic)
     end
     return lattice
 end
+
+flipspin(lattice::Lattice, index::CartesianIndex) =
+    lattice[index] == lattice.states[1] ? lattice.states[2] : lattice.states[1]
+flipspin(lattice::Lattice, i, j) = flipspin(lattice, CartesianIndex(i, j))
