@@ -26,6 +26,10 @@ energy(lattice::Lattice, i, j, J, B=0) = energy(lattice, CartesianIndex(i, j), J
 energy(lattice::Lattice, J, B=0) =
     sum(energy(lattice, index, J, B) for index in eachindex(lattice))
 
-partition_function(lattice::Lattice, args...) = exp(-energy(lattice, args...))
+partition_function(lattice::Lattice, i::CartesianIndex, β, J, B=0) =
+    exp(-β * energy(lattice, i, J, B))
+partition_function(lattice::Lattice, i, j, β, J, B=0) =
+    exp(-β * energy(lattice, i, j, J, B))
+partition_function(lattice::Lattice, β, J, B=0) = exp(-β * energy(lattice, J, B))
 
 magnetization(lattice::Lattice) = mean(lattice)
