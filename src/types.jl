@@ -1,4 +1,6 @@
-export Lattice, Evolution
+export Lattice, Evolution, Spin, up, down
+
+@enum Spin up = 1 down = -1
 
 struct Lattice{T} <: AbstractMatrix{T}
     spins::Matrix{T}
