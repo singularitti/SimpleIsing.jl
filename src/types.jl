@@ -28,5 +28,11 @@ Base.IndexStyle(::Type{<:Evolution}) = IndexLinear()
 Base.getindex(lattice::Lattice, I...) = getindex(parent(lattice), I...)
 Base.getindex(evolution::Evolution, I) = getindex(parent(evolution), I)
 
-Base.setindex!(lattice::Lattice, v, I...) = setindex!(parent(lattice), v, I...)
+function Base.setindex!(lattice::Lattice, v, I...)
+    if v in states(eltype(lattice))
+        return setindex!(parent(lattice), v, I...)
+    else
+        throw(DomainError(v, "you cannot set spin to value $v."))
+    end
+end
 Base.setindex!(evolution::Evolution, v, I) = setindex!(parent(evolution), v, I)
