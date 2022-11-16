@@ -5,7 +5,7 @@ export Lattice, Evolution, Spin, up, down, states
 struct Lattice{T} <: AbstractMatrix{T}
     spins::Matrix{T}
     function Lattice{T}(spins) where {T}
-        @assert all(spin in states(T) for spin in spins)
+        @assert all(isvalid(spin) for spin in spins)
         return new(spins)
     end
 end
@@ -13,6 +13,8 @@ Lattice(spins::AbstractMatrix) = Lattice{eltype(spins)}(collect(spins))
 
 states(::Type{Spin}) = instances(Spin)
 states(::Type{<:Number}) = (1, -1)
+
+isvalid(spin) = spin in states(typeof(spin))
 
 struct Evolution{T} <: AbstractVector{Lattice{T}}
     history::Vector{Lattice{T}}
