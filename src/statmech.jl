@@ -18,11 +18,8 @@ end
 neighborspins(lattice::Lattice, i, j) = neighborspins(lattice, CartesianIndex(i, j))
 
 energy(∑ⱼsⱼ, sᵢ, J, B) = -(J / 2 * ∑ⱼsⱼ + B) * sᵢ
-function energy(lattice::Lattice, i::CartesianIndex, J, B)
-    ∑ⱼsⱼ = sum(neighborspins(lattice, i))
-    sᵢ = lattice[i]
-    return energy(∑ⱼsⱼ, sᵢ, J, B)
-end
+energy(lattice::Lattice, i::CartesianIndex, J, B) =
+    energy(sum(neighborspins(lattice, i)), lattice[i], J, B)
 energy(lattice::Lattice, i, j, J, B) = energy(lattice, CartesianIndex(i, j), J, B)
 energy(lattice::Lattice, J, B) =
     sum(energy(lattice, index, J, B) for index in eachindex(lattice))
