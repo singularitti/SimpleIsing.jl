@@ -1,10 +1,10 @@
-export Plain, simulate!
+export Basic, simulate!
 
 abstract type Algorithm end
-struct Plain <: Algorithm end
+struct Basic <: Algorithm end
 struct SwendsenWang <: Algorithm end
 
-function simulate!(lattice::Lattice, β, J, B, ::Plain)
+function simulate!(lattice::Lattice, β, J, B, ::Basic)
     for index in eachindex(lattice)
         trial_spin = -lattice[index]  # Trial move, no in-place update now!
         eᵢ_old = energy(lattice, index, J, B)
