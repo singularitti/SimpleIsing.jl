@@ -1,17 +1,20 @@
-export Lattice, Evolution, Spin, up, down
+export Lattice, Evolution, Spin, up, down, states
 
 @enum Spin up = 1 down = -1
 
 struct Lattice{T} <: AbstractMatrix{T}
     spins::Matrix{T}
-    states::NTuple{2,T}
     function Lattice{T}(spins) where {T}
-        states = extrema(spins)
-        @assert all(spin in states for spin in spins)
-        return new(spins, states)
+        @assert all(isvalid(spin) for spin in spins)
+        return new(spins)
     end
 end
 Lattice(spins::AbstractMatrix) = Lattice{eltype(spins)}(collect(spins))
+
+states(::Type{Spin}) = instances(Spin)
+states(::Type{<:Number}) = (1, -1)
+
+isvalid(spin) = spin in states(typeof(spin))
 
 struct Evolution{T} <: AbstractVector{Lattice{T}}
     history::Vector{Lattice{T}}
@@ -28,5 +31,11 @@ Base.IndexStyle(::Type{<:Evolution}) = IndexLinear()
 Base.getindex(lattice::Lattice, I...) = getindex(parent(lattice), I...)
 Base.getindex(evolution::Evolution, I) = getindex(parent(evolution), I)
 
-Base.setindex!(lattice::Lattice, v, I...) = setindex!(parent(lattice), v, I...)
+function Base.setindex!(lattice::Lattice, v, I...)
+    if v in states(eltype(lattice))
+        return setindex!(parent(lattice), v, I...)
+    else
+        throw(DomainError(v, "you cannot set spin to value $v."))
+    end
+end
 Base.setindex!(evolution::Evolution, v, I) = setindex!(parent(evolution), v, I)

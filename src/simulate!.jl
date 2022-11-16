@@ -26,6 +26,8 @@ function simulate!(evolution::Evolution, lattice::Lattice, β, J, B, ::Basic)
     return lattice
 end
 
-flipspin(lattice::Lattice, index::CartesianIndex) =
-    lattice[index] == lattice.states[1] ? lattice.states[2] : lattice.states[1]
+function flipspin(lattice::Lattice, index::CartesianIndex)
+    a, b = states(eltype(lattice))
+    return lattice[index] == a ? b : a
+end
 flipspin(lattice::Lattice, i, j) = flipspin(lattice, CartesianIndex(i, j))
