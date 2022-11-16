@@ -17,10 +17,11 @@ function neighborspins(lattice::Lattice, index::CartesianIndex)
 end
 neighborspins(lattice::Lattice, i, j) = neighborspins(lattice, CartesianIndex(i, j))
 
+energy(∑ⱼsⱼ, sᵢ, J, B=0) = -(J / 2 * ∑ⱼsⱼ + B) * sᵢ
 function energy(lattice::Lattice, i::CartesianIndex, J, B=0)
     ∑ⱼsⱼ = sum(neighborspins(lattice, i))
     sᵢ = lattice[i]
-    return -(J / 2 * ∑ⱼsⱼ + B) * sᵢ
+    return energy(∑ⱼsⱼ, sᵢ, J, B)
 end
 energy(lattice::Lattice, i, j, J, B=0) = energy(lattice, CartesianIndex(i, j), J, B)
 energy(lattice::Lattice, J, B=0) =
