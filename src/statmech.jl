@@ -17,20 +17,19 @@ function neighborspins(lattice::Lattice, index::CartesianIndex)
 end
 neighborspins(lattice::Lattice, i, j) = neighborspins(lattice, CartesianIndex(i, j))
 
-energy(∑ⱼsⱼ, sᵢ, J, B=0) = -(J / 2 * ∑ⱼsⱼ + B) * sᵢ
-function energy(lattice::Lattice, i::CartesianIndex, J, B=0)
+energy(∑ⱼsⱼ, sᵢ, J, B) = -(J / 2 * ∑ⱼsⱼ + B) * sᵢ
+function energy(lattice::Lattice, i::CartesianIndex, J, B)
     ∑ⱼsⱼ = sum(neighborspins(lattice, i))
     sᵢ = lattice[i]
     return energy(∑ⱼsⱼ, sᵢ, J, B)
 end
-energy(lattice::Lattice, i, j, J, B=0) = energy(lattice, CartesianIndex(i, j), J, B)
-energy(lattice::Lattice, J, B=0) =
+energy(lattice::Lattice, i, j, J, B) = energy(lattice, CartesianIndex(i, j), J, B)
+energy(lattice::Lattice, J, B) =
     sum(energy(lattice, index, J, B) for index in eachindex(lattice))
 
-partition_function(lattice::Lattice, i::CartesianIndex, β, J, B=0) =
+partition_function(lattice::Lattice, i::CartesianIndex, β, J, B) =
     exp(-β * energy(lattice, i, J, B))
-partition_function(lattice::Lattice, i, j, β, J, B=0) =
-    exp(-β * energy(lattice, i, j, J, B))
-partition_function(lattice::Lattice, β, J, B=0) = exp(-β * energy(lattice, J, B))
+partition_function(lattice::Lattice, i, j, β, J, B) = exp(-β * energy(lattice, i, j, J, B))
+partition_function(lattice::Lattice, β, J, B) = exp(-β * energy(lattice, J, B))
 
 magnetization(lattice::Lattice) = mean(lattice)
