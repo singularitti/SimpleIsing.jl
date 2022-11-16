@@ -4,11 +4,9 @@ export Lattice, Evolution, Spin, up, down, states
 
 struct Lattice{T} <: AbstractMatrix{T}
     spins::Matrix{T}
-    states::NTuple{2,T}
     function Lattice{T}(spins) where {T}
-        states = extrema(spins)
-        @assert all(spin in states for spin in spins)
-        return new(spins, states)
+        @assert all(spin in states(T) for spin in spins)
+        return new(spins)
     end
 end
 Lattice(spins::AbstractMatrix) = Lattice{eltype(spins)}(collect(spins))
