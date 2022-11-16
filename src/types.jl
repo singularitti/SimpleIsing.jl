@@ -1,4 +1,4 @@
-export Lattice, Evolution, Spin, up, down
+export Lattice, Evolution, Spin, up, down, states
 
 @enum Spin up = 1 down = -1
 
@@ -12,6 +12,8 @@ struct Lattice{T} <: AbstractMatrix{T}
     end
 end
 Lattice(spins::AbstractMatrix) = Lattice{eltype(spins)}(collect(spins))
+
+states(::Spin) = instances(Spin)
 
 struct Evolution{T} <: AbstractVector{Lattice{T}}
     history::Vector{Lattice{T}}
