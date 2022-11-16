@@ -12,7 +12,7 @@ end
 Lattice(spins::AbstractMatrix) = Lattice{eltype(spins)}(collect(spins))
 
 states(::Type{Spin}) = instances(Spin)
-states(::Type{<:Integer}) = (1, -1)
+states(::Type{<:Number}) = (1, -1)
 
 struct Evolution{T} <: AbstractVector{Lattice{T}}
     history::Vector{Lattice{T}}
