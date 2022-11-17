@@ -1,11 +1,15 @@
 using RecipesBase
 
 @recipe function f(lattice::Lattice)
-    xlabel --> "x"
+    xlims --> extrema(axes(lattice, 1))
+    ylims --> extrema(axes(lattice, 2))
+    xguide --> "x"
     yguide --> "y"
-    color --> :gist_earth
-    clim --> (-2, 1.1)
+    guidefontsize --> 8
+    tickfontsize --> 6
+    color --> :binary
     colorbar --> false
     frame --> :box
+    aspect_ratio --> :equal
     return axes(lattice)..., lattice
 end
