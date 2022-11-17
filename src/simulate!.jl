@@ -30,3 +30,11 @@ function flipspin(lattice::Lattice, index::CartesianIndex)
     return lattice[index] == a ? b : a
 end
 flipspin(lattice::Lattice, i, j) = flipspin(lattice, CartesianIndex(i, j))
+
+# Idea from https://github.com/chezou/julia-100-exercises/blob/master/README.md#1-create-a-8x8-matrix-and-fill-it-with-a-checkerboard-pattern
+function checkerboardmasks(m, n)
+    mask = falses(m, n)
+    mask[1:2:end, 2:2:end] .= true
+    mask[2:2:end, 1:2:end] .= true
+    return mask, true .- mask
+end
