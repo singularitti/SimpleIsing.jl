@@ -18,9 +18,9 @@ function simulate!(lattice::Lattice, β, J, B, ::Basic)
     end
     return lattice
 end
-function simulate!(lattice::Lattice, n, β, J, B, ::Basic)
+function simulate!(lattice::Lattice, n, β, J, B, alg::Algorithm)
     return map(1:n) do _
-        deepcopy(simulate!(lattice, β, J, B, Basic()))  # Remember to `deepcopy`!
+        deepcopy(simulate!(lattice, β, J, B, alg))  # Remember to `deepcopy`!
     end
 end
 
