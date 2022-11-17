@@ -38,3 +38,9 @@ function checkerboardmasks(m, n)
     mask[2:2:end, 1:2:end] .= true
     return mask, true .- mask
 end
+
+function mapat!(f, array, indices...)  # Map function `f` at specific indices of an array
+    area = view(array, indices...)
+    map!(f, area, area)
+    return array
+end
