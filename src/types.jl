@@ -16,20 +16,11 @@ states(::Type{<:Number}) = (1, -1)
 
 isvalid(spin) = spin in states(typeof(spin))
 
-struct Evolution{T} <: AbstractVector{Lattice{T}}
-    history::Vector{Lattice{T}}
-end
-
 Base.parent(lattice::Lattice) = lattice.spins
-Base.parent(evolution::Evolution) = evolution.history
 
 Base.size(lattice::Lattice) = size(parent(lattice))
-Base.size(evolution::Evolution) = size(parent(evolution))
-
-Base.IndexStyle(::Type{<:Evolution}) = IndexLinear()
 
 Base.getindex(lattice::Lattice, I...) = getindex(parent(lattice), I...)
-Base.getindex(evolution::Evolution, I) = getindex(parent(evolution), I)
 
 function Base.setindex!(lattice::Lattice, v, I...)
     if v in states(eltype(lattice))
@@ -38,4 +29,3 @@ function Base.setindex!(lattice::Lattice, v, I...)
         throw(DomainError(v, "you cannot set spin to value $v."))
     end
 end
-Base.setindex!(evolution::Evolution, v, I) = setindex!(parent(evolution), v, I)
