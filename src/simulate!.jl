@@ -2,6 +2,7 @@ export Basic, simulate!
 
 abstract type Algorithm end
 struct Basic <: Algorithm end
+struct Checkerboard <: Algorithm end
 struct SwendsenWang <: Algorithm end
 
 function simulate!(lattice::Lattice, β, J, B, ::Basic)
