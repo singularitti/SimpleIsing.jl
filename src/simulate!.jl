@@ -18,12 +18,10 @@ function simulate!(lattice::Lattice, β, J, B, ::Basic)
     end
     return lattice
 end
-function simulate!(evolution::Evolution, lattice::Lattice, β, J, B, ::Basic)
-    n = length(evolution)
-    for i in 1:n
-        evolution[i] = deepcopy(simulate!(lattice, β, J, B, Basic()))  # Remember to `deepcopy`!
+function simulate!(lattice::Lattice, n, β, J, B, ::Basic)
+    return map(1:n) do _
+        deepcopy(simulate!(lattice, β, J, B, Basic()))  # Remember to `deepcopy`!
     end
-    return lattice
 end
 
 function flipspin(lattice::Lattice, index::CartesianIndex)
