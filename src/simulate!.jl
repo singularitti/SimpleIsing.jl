@@ -7,7 +7,7 @@ struct SwendsenWang <: Algorithm end
 
 function simulate!(lattice::Lattice, β, J, B, ::Basic)
     for index in eachindex(lattice)
-        trial_spin = flipspin(lattice, index)  # Trial move, no in-place update now!
+        trial_spin = flipspin!(lattice, index)  # Trial move, no in-place update now!
         eᵢ_old = energy(lattice, index, J, B)
         eᵢ_new = energy(sum(neighborspins(lattice, index)), trial_spin, J, B)
         P = exp(-β * (eᵢ_new - eᵢ_old))
@@ -25,11 +25,11 @@ function simulate!(lattice::Lattice, n, β, J, B, alg::Algorithm)
     end
 end
 
-function flipspin(lattice::Lattice, index::CartesianIndex)
+function flipspin!(lattice::Lattice, index::CartesianIndex)
     a, b = states(eltype(lattice))
     return lattice[index] == a ? b : a
 end
-flipspin(lattice::Lattice, i, j) = flipspin(lattice, CartesianIndex(i, j))
+flipspin!(lattice::Lattice, i, j) = flipspin!(lattice, CartesianIndex(i, j))
 
 # Idea from https://github.com/chezou/julia-100-exercises/blob/master/README.md#1-create-a-8x8-matrix-and-fill-it-with-a-checkerboard-pattern
 function checkerboardmasks(m, n)
