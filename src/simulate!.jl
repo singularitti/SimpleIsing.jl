@@ -1,4 +1,4 @@
-export Basic, simulate!
+export Basic, Checkerboard, simulate!
 
 abstract type Algorithm end
 struct Basic <: Algorithm end
@@ -16,6 +16,18 @@ function simulate!(lattice::Lattice, β, J, B, ::Basic)
         if P > rand()
             lattice[index] = trial_spin  # Accept the trial move
         end
+    end
+    return lattice
+end
+function simulate!(lattice::Lattice, β, J, B, ::Checkerboard)
+    m, n = size(lattice)
+    interactions = sum(Base.Fix1(circshift, lattice), ((1, 0), (-1, 0), (0, 1), (0, -1)))
+    for mask in checkerboardmasks(m, n)  # Do it twice
+        # ΔE = new state - old state = interactions * ((-lattice) - (lattice))
+        ΔE = (2J * interactions .+ B) .* lattice  # Note the elementwise multiplication!
+        P = exp.(-β .* ΔE) .* mask  # A matrix of Boltzmann factors
+        indices = P .> rand(m, n)  # Determine which atoms to update states
+        mapat!(flipspin, lattice, indices)
     end
     return lattice
 end
