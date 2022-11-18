@@ -1,6 +1,6 @@
 # This file is machine-generated - editing it directly is not advised
 
-julia_version = "1.8.2"
+julia_version = "1.8.3"
 manifest_format = "2.0"
 project_hash = "98a73a5a8e4a14f31b318badc0f952526dc6f4b6"
 
@@ -178,7 +178,7 @@ uuid = "9e88b42a-f829-5b0c-bbe9-9e923198166b"
 
 [[deps.SimpleIsing]]
 deps = ["RecipesBase", "Statistics"]
-git-tree-sha1 = "bd63bcedaae8c31c6ce9bfd293a1dea33a0a25ba"
+git-tree-sha1 = "561ede36bd859310272e9a7caee0725cebbac31b"
 repo-rev = "main"
 repo-url = "https://github.com/singularitti/SimpleIsing.jl"
 uuid = "46c501a3-f641-4b41-8780-95b38626ad05"
