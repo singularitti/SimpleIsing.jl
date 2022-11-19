@@ -21,7 +21,7 @@ function simulate!(lattice::Lattice, β, J, B, ::Basic)
 end
 function simulate!(lattice::Lattice, β, J, B, ::Checkerboard)
     m, n = size(lattice)
-    interactions = sum(Base.Fix1(circshift, lattice), ((1, 0), (-1, 0), (0, 1), (0, -1)))
+    interactions = sum(findneighbors(lattice))
     for mask in checkerboardmasks(m, n)  # Do it twice
         # ΔE = new state - old state = interactions * ((-lattice) - (lattice))
         ΔE = (2J * interactions .+ B) .* lattice  # Note the elementwise multiplication!
