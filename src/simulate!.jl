@@ -31,6 +31,12 @@ function simulate!(lattice::Lattice, β, J, B, ::Checkerboard)
     end
     return lattice
 end
+function simulate!(lattice::Lattice, β, J, B, ::SwendsenWang)
+    index = rand(CartesianIndices(lattice))  # Randomly select an atom from `lattice`
+    p = 1 - exp(-β * (2J + B))
+    recursive_flipspin!(lattice, index, lattice[index], p)
+    return lattice
+end
 function simulate!(lattice::Lattice, n, β, J, B, alg::Algorithm)
     return map(1:n) do _
         deepcopy(simulate!(lattice, β, J, B, alg))  # Remember to `deepcopy`!
