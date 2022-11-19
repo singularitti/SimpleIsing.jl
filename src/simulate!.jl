@@ -41,7 +41,7 @@ function flipspin(spin)
     a, b = states(typeof(spin))
     return spin == a ? b : a
 end
-function flipspin!(lattice::Lattice, index::CartesianIndex)
+function flipspin(lattice::Lattice, index::CartesianIndex)
     a, b = states(eltype(lattice))
     return lattice[index] == a ? b : a
 end
