@@ -1,4 +1,4 @@
-export Basic, Checkerboard, simulate!
+export Basic, Checkerboard, SwendsenWang, simulate!
 
 abstract type Algorithm end
 struct Basic <: Algorithm end
