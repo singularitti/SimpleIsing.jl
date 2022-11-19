@@ -45,6 +45,12 @@ function flipspin(lattice::Lattice, index::CartesianIndex)
     a, b = states(eltype(lattice))
     return lattice[index] == a ? b : a
 end
+# Flip a spin in-place
+function flipspin!(lattice::Lattice, index::CartesianIndex)
+    spin = flipspin(lattice, index)
+    lattice[index] = spin
+    return spin
+end
 flipspin!(lattice::Lattice, i, j) = flipspin!(lattice, CartesianIndex(i, j))
 
 # Idea from https://github.com/chezou/julia-100-exercises/blob/master/README.md#1-create-a-8x8-matrix-and-fill-it-with-a-checkerboard-pattern
