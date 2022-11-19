@@ -52,6 +52,16 @@ function flipspin!(lattice::Lattice, index::CartesianIndex)
     return spin
 end
 flipspin!(lattice::Lattice, i, j) = flipspin!(lattice, CartesianIndex(i, j))
+# Flip a spin in-place recursively
+function recursive_flipspin!(lattice::Lattice, index::CartesianIndex, spin₀, p)
+    spin = flipspin!(lattice, index)
+    for index′ in findneighbors(lattice, index)
+        if lattice[index′] == spin₀ && p > rand()
+            return recursive_flipspin!(lattice, index′, spin₀, p)  # Recursive call
+        end
+    end
+    return spin
+end
 
 # Idea from https://github.com/chezou/julia-100-exercises/blob/master/README.md#1-create-a-8x8-matrix-and-fill-it-with-a-checkerboard-pattern
 function checkerboardmasks(m, n)
