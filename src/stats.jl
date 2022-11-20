@@ -2,9 +2,9 @@ using Statistics: mean
 
 export spatialcorrelation, buildmodel
 
-sigmax(lattice::Lattice) = mean(lattice; dims=2)  # Note we sum over `y`!
+sigmax(lattice) = mean(lattice; dims=2)  # Note we sum over `y`!
 
-sigmay(lattice::Lattice) = mean(lattice; dims=1)  # Note we sum over `x`!
+sigmay(lattice) = mean(lattice; dims=1)  # Note we sum over `x`!
 
 function spatialcorrelation(lattice::Lattice)
     Σx, Σy = sigmax(lattice), sigmay(lattice)  # Note we sum over `y` and `x`, respectively
