@@ -18,7 +18,7 @@ end
 function buildmodel(lattice::Lattice)
     m, n = size(lattice)
     return function (z, p)
-        a, b = p
-        return a * (exp(-z / b) + exp(-(n - z) / b))
+        a, b = float.(p)
+        return a * (exp.(-z ./ b) + exp.(-(n .- z) ./ b))
     end
 end
