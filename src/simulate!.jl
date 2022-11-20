@@ -63,7 +63,7 @@ function recursive_flipspin!(lattice::Lattice, index::CartesianIndex, spin₀, p
     spin = flipspin!(lattice, index)
     for index′ in findneighbors(lattice, index)
         if lattice[index′] == spin₀ && p > rand()
-            return recursive_flipspin!(lattice, index′, spin₀, p)  # Recursive call
+            recursive_flipspin!(lattice, index′, spin₀, p)  # Recursive call, do not `return` here!
         end
     end
     return spin
