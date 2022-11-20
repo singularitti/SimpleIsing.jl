@@ -1,4 +1,4 @@
-export Basic, Checkerboard, simulate!
+export Basic, Checkerboard, SwendsenWang, simulate!
 
 abstract type Algorithm end
 struct Basic <: Algorithm end
@@ -21,7 +21,7 @@ function simulate!(lattice::Lattice, β, J, B, ::Basic)
 end
 function simulate!(lattice::Lattice, β, J, B, ::Checkerboard)
     m, n = size(lattice)
-    interactions = sum(Base.Fix1(circshift, lattice), ((1, 0), (-1, 0), (0, 1), (0, -1)))
+    interactions = sum(findneighbors(lattice))
     for mask in checkerboardmasks(m, n)  # Do it twice
         # ΔE = new state - old state = interactions * ((-lattice) - (lattice))
         ΔE = (2J * interactions .+ B) .* lattice  # Note the elementwise multiplication!
@@ -29,6 +29,12 @@ function simulate!(lattice::Lattice, β, J, B, ::Checkerboard)
         indices = P .> rand(m, n)  # Determine which atoms to update states
         mapat!(flipspin, lattice, indices)
     end
+    return lattice
+end
+function simulate!(lattice::Lattice, β, J, B, ::SwendsenWang)
+    index = rand(CartesianIndices(lattice))  # Randomly select an atom from `lattice`
+    p = 1 - exp(-β * (2J + B))
+    recursive_flipspin!(lattice, index, lattice[index], p)
     return lattice
 end
 function simulate!(lattice::Lattice, n, β, J, B, alg::Algorithm)
@@ -41,11 +47,27 @@ function flipspin(spin)
     a, b = states(typeof(spin))
     return spin == a ? b : a
 end
-function flipspin!(lattice::Lattice, index::CartesianIndex)
+function flipspin(lattice::Lattice, index::CartesianIndex)
     a, b = states(eltype(lattice))
     return lattice[index] == a ? b : a
 end
+# Flip a spin in-place
+function flipspin!(lattice::Lattice, index::CartesianIndex)
+    spin = flipspin(lattice, index)
+    lattice[index] = spin
+    return spin
+end
 flipspin!(lattice::Lattice, i, j) = flipspin!(lattice, CartesianIndex(i, j))
+# Flip a spin in-place recursively
+function recursive_flipspin!(lattice::Lattice, index::CartesianIndex, spin₀, p)
+    spin = flipspin!(lattice, index)
+    for index′ in findneighbors(lattice, index)
+        if lattice[index′] == spin₀ && p > rand()
+            recursive_flipspin!(lattice, index′, spin₀, p)  # Recursive call, do not `return` here!
+        end
+    end
+    return spin
+end
 
 # Idea from https://github.com/chezou/julia-100-exercises/blob/master/README.md#1-create-a-8x8-matrix-and-fill-it-with-a-checkerboard-pattern
 function checkerboardmasks(m, n)

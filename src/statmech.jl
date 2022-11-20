@@ -16,6 +16,8 @@ function neighborspins(lattice::Lattice, index::CartesianIndex)
     return map(Base.Fix1(getindex, lattice), neighbors)
 end
 neighborspins(lattice::Lattice, i, j) = neighborspins(lattice, CartesianIndex(i, j))
+findneighbors(lattice::Lattice) =
+    map(Base.Fix1(circshift, lattice), ((-1, 0), (1, 0), (0, -1), (0, 1)))
 
 energy(∑ⱼsⱼ, sᵢ, J, B) = -(J * ∑ⱼsⱼ + B) * sᵢ
 energy(lattice::Lattice, i::CartesianIndex, J, B) =
