@@ -1,0 +1,49 @@
+\section{Correlations in the 2D Ising Model}
+
+We discussed the the cluster algorithm for the 2d Ising model in class. We saw that the
+partition function could be written as
+%
+\begin{equation}
+    Z = \sum_{\sigma_i} \sum_{n_{ij}} \prod_{<ij>}
+    \bigl((1 - p) \delta_{n_{ij},0} + p \delta_{\sigma_i,\sigma_j} \delta_{n_{ij},1}\bigr),
+\end{equation}
+%
+where \(<ij>\) denotes any pair of nearest neighbors.
+In this problem, you should start from this code and add measurements to measure the
+correlation length near the critical value of \(J\), or \(p=1 - \exp(-2J)\).
+
+As the Ising model approaches its critical point, the size of spatial clusters grows. It is
+this growth in the average size of clusters which is responsible for diverging correlation
+length at \(T_c\) and the corresponding second order phase transition. The cluster algorithm
+avoids the critical slowing down that comes from the slow evolution through phase space of
+the simple, local site Metropolis algorithm.
+
+In this problem, you should measure the spatial correlation between spins. The simplest
+correlator is
+%
+\begin{equation}
+    \langle \sigma(x_1, y_1), \sigma(x_2, y_2) \rangle.
+\end{equation}
+%
+But the statistical errors are much smaller if on each configuration of an \(N \times N\)
+lattice you calculate
+%
+\begin{equation}
+    \Sigma_x(x) = \frac{ 1 }{ N } \sum_y \sigma(x, y),
+\end{equation}
+%
+and
+%
+\begin{equation}
+    \Sigma_y(y) = \frac{ 1 }{ N } \sum_x \sigma(x, y),
+\end{equation}
+%
+and then calculate
+%
+\begin{equation}
+    \Sigma(z) = \frac{ 1 }{ 2N } \biggl( \sum_x \Sigma_x(x) \Sigma_x(x+z)
+    + \sum_y \Sigma_y(y) \Sigma_y(y+z) \biggr).
+\end{equation}
+%
+On a periodic lattice, the ensemble average ⟨Σ(z)⟩ is only a function of |z|. Above
+Tc, where there is no spontaneous magnetization, ⟨Σ(z)⟩ has the form
