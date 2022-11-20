@@ -1,6 +1,6 @@
 using Statistics: mean
 
-export spatialcorrelation
+export spatialcorrelation, buildmodel
 
 sigmax(lattice::Lattice) = mean(lattice; dims=2)  # Note we sum over `y`!
 
@@ -12,5 +12,13 @@ function spatialcorrelation(lattice::Lattice)
         term1 = mean(Σx .* sigmax(circshift(lattice, (-z, 0))))
         term2 = mean(Σy .* sigmay(circshift(lattice, (0, -z))))
         return (term1 + term2) / 2
+    end
+end
+
+function buildmodel(lattice::Lattice)
+    m, n = size(lattice)
+    return function (z, p)
+        a, b = p
+        return a * (exp(-z / b) + exp(-(n - z) / b))
     end
 end
