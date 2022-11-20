@@ -1,6 +1,7 @@
+using LsqFit: curve_fit
 using Statistics: mean
 
-export spatialcorrelation, buildmodel
+export spatialcorrelation, buildmodel, fit
 
 sigmax(lattice) = mean(lattice; dims=2)  # Note we sum over `y`!
 
@@ -21,4 +22,18 @@ function buildmodel(lattice::Lattice)
         a, b = float.(p)
         return a * (exp.(-z ./ b) + exp.(-(n .- z) ./ b))
     end
+end
+
+function ensembleaverage(trace)
+    m, n = size(trace[1])
+    return map(1:n) do z  # ⟨Σ(z)⟩ is a function z
+        mean(spatialcorrelation(lattice)(z) for lattice in trace)  # Time average
+    end
+end
+
+function fit(lattice::Lattice, trace, params)
+    m, n = size(lattice)
+    model = buildmodel(lattice)
+    Σ̄z = ensembleaverage(trace)
+    return curve_fit(model, 1:n, Σ̄z, params)
 end
