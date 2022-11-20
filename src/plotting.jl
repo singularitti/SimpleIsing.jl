@@ -34,7 +34,6 @@ end
     ylims --> extrema(magnetization)
     xguide --> "steps (after thermalization)"
     yguide --> "magnetization"
-    label --> "total"
     fontfamily --> "Palatino"
     guidefontsize --> 12
     tickfontsize --> 10
@@ -46,14 +45,11 @@ end
     grid --> nothing
     _zero = zero(eltype(magnetization))
     @series begin
-        label := "spin up"
-        x := findall(>(_zero), magnetization)
-        y := magnetization[magnetization .<= 0]
+        label --> "spin up"
+        findall(>(_zero), magnetization), magnetization[magnetization .<= 0]
     end
     @series begin
-        label := "spin down"
-        x := findall(<=(_zero), magnetization)
-        y := magnetization[magnetization .> 0]
+        label --> "spin down"
+        findall(<=(_zero), magnetization), magnetization[magnetization .> 0]
     end
-    return steps, magnetization
 end
