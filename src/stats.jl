@@ -1,7 +1,16 @@
 using LsqFit: curve_fit
 using Statistics: mean
 
-export spincor, buildmodel, ensembleaverage, fit, applyfit, average
+export Modeller, spincor, ensembleaverage, fit, applyfit, average
+
+struct Modeller{T}
+    n::T
+end
+Modeller(lattice::Lattice) = Modeller(size(lattice, 2))
+function (m::Modeller)(z, params)
+    a, b = float.(params)
+    return @. a * (exp(-z / b) + exp(-(m.n - z) / b))
+end
 
 function average(lattice::Lattice, dim)
     if dim == :x
@@ -22,13 +31,6 @@ function spincor(lattice::Lattice)
     end
 end
 
-function buildmodel(n)
-    return function (z, params)
-        a, b = float.(params)
-        return @. a * (exp(-z / b) + exp(-(n - z) / b))
-    end
-end
-
 function ensembleaverage(trace)
     m, n = size(trace[1])
     return map(1:n) do z  # ⟨Σ(z)⟩ is a function z
@@ -38,7 +40,7 @@ end
 
 function fit(trace, params)
     m, n = size(trace[1])
-    model = buildmodel(n)
+    model = Modeller(n)
     𝐳 = 1:n
     𝚺̄z = ensembleaverage(trace)
     return curve_fit(model, 𝐳, 𝚺̄z, params)
@@ -46,5 +48,5 @@ end
 
 function applyfit(trace, params)
     n = size(trace[1], 1)
-    return Base.Fix2(buildmodel(n), fit(trace, params).param)
+    return Base.Fix2(Modeller(n), fit(trace, params).param)
 end
