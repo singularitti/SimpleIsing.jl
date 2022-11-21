@@ -25,8 +25,10 @@ end
 function spincor(lattice::Lattice)
     Σx, Σy = average(lattice, :x), average(lattice, :y)
     return function (z)
-        term1 = mean(Σx .* average(circshift(lattice, (-z, 0)), :x))
-        term2 = mean(Σy .* average(circshift(lattice, (0, -z)), :y))
+        Σx₊z, Σy₊z = average(circshift(lattice, (0, -z)), :x),
+        average(circshift(lattice, (-z, 0)), :y)
+        term1 = mean(Σx .* Σx₊z)
+        term2 = mean(Σy .* Σy₊z)
         return (term1 + term2) / 2
     end
 end
