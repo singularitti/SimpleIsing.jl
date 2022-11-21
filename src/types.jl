@@ -29,3 +29,5 @@ function Base.setindex!(lattice::Lattice, v, I...)
         throw(DomainError(v, "you cannot set spin to value $v."))
     end
 end
+
+Base.similar(::Lattice, ::Type{T}, dims::Dims) where {T} = Lattice(rand(states(T), dims...))
