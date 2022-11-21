@@ -44,8 +44,7 @@ function fit(trace, params)
     return curve_fit(model, 𝐳, 𝚺̄z, params)
 end
 
-function applyfit(lattice::Lattice, trace, params)
-    m, n = size(lattice)
-    a, b = fit(lattice, trace, params).param
-    return z -> a * (exp.(-z ./ b) + exp.(-(n .- z) ./ b))
+function applyfit(trace, params)
+    n = size(trace[1], 1)
+    return Base.Fix2(buildmodel(n), fit(trace, params).param)
 end
