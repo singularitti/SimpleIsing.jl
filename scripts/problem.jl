@@ -22,11 +22,14 @@ lattice = Lattice(ones(N, N))
     0.6,
 ]
 𝐛 = Float64[]
+𝚺z = Vector{Float64}[]
 for J in 𝐉
     nsteps = 8000
     nsteps_thermal = 2000  # Number of steps needed to be thermalized
     trace = simulate!(lattice, nsteps, β, J, 0, SwendsenWang())
+    Σz = ensembleaverage(trace[nsteps_thermal:end])
+    push!(𝚺z, Σz)
     b = fit(lattice, trace[nsteps_thermal:end], [0.2588, 32.537]).param[2]
     push!(𝐛, b)
 end
-paramplot(𝐉, 𝐛)
+# paramplot(𝐉, 𝐛)
