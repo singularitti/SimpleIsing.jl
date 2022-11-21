@@ -1,7 +1,7 @@
 using LsqFit: curve_fit
 using Statistics: mean
 
-export Modeller, spincor, timeaverage_spincor, fit, applyfit, average
+export Modeller, spincor, timeaverage_spincor, preparedata
 
 struct Modeller{T}
     n::T
