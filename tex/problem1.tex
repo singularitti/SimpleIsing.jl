@@ -1,0 +1,21 @@
+\section{Monte Carlo Simulation of Liquid Argon}
+
+The Monte Carlo method can be used to simulate argon liquid, at a given temperature, through
+the canonical ensemble. The results of a canonical simulation should agree very closely with
+the results of a microcanonical simulation (molecular dynamics), differing only due to the
+fact that the number of particles, while large, is not infinite.
+
+Your molecular dynamics code can be easily modified to do a Monte Carlo simu- lation by
+replacing the Verlet algorithm part of the code with a Metropolis update for each particle
+and velocity. Of course, you do not need to do the velocity via Monte Carlo, since it is a
+Maxwell distribution, but it is a negligible computational overhead to include it and it
+keeps the changes in your code small.
+
+Modify your argon molecular dynamics code to do a Monte Carlo simulation at a temperature of
+\(T = 1.069\) and density \(\rho = 0.75\). Measure the same variables as in Problem Set 2
+and check that your answers agree. Include statistical errors for your results.
+
+In the molecular dynamics simulations, the autocorrelation times for observables are related
+to physical quantities, since the evolution represents real dynamics of the system. For the
+Monte Carlo, the autocorrelation times reflect the algorithm used for the update. Quote
+measured integrated autocorrelation times for the measured temperature.
