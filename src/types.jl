@@ -1,12 +1,9 @@
-export Lattice, Evolution, Spin, up, down, states
-
-@enum Spin up = 1 down = -1
+export Lattice, states
 
 struct Lattice{T} <: AbstractMatrix{T}
     spins::Matrix{T}
 end
 
-states(::Type{Spin}) = instances(Spin)
 states(::Type{<:Number}) = (1, -1)
 
 isvalid(spin) = spin in states(typeof(spin))
