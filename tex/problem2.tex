@@ -4,11 +4,12 @@ We discussed the the cluster algorithm for the 2d Ising model in class. We saw t
 partition function could be written as
 %
 \begin{equation}
-    Z = \sum_{\sigma_i} \sum_{n_{ij}} \prod_{<ij>}
+    Z = \sum_{\{\sigma\}} \prod_{\langle i j \rangle} \sum_{n_{ij}=0}^1
     \bigl((1 - p) \delta_{n_{ij},0} + p \delta_{\sigma_i,\sigma_j} \delta_{n_{ij},1}\bigr),
 \end{equation}
 %
-where \(<ij>\) denotes any pair of nearest neighbors.
+in the Swendsen--Wang algorithm,
+where \(\langle i j \rangle\) refers to all nearest neighbour pairs of atoms.
 In this problem, you should start from this code and add measurements to measure the
 correlation length near the critical value of \(J\), or \(p=1 - \exp(-2J)\).
 
@@ -22,7 +23,7 @@ In this problem, you should measure the spatial correlation between spins. The s
 correlator is
 %
 \begin{equation}
-    \langle \sigma(x_1, y_1), \sigma(x_2, y_2) \rangle.
+    \expval{ \sigma(x_1, y_1) \sigma(x_2, y_2) }.
 \end{equation}
 %
 But the statistical errors are much smaller if on each configuration of an \(N \times N\)
@@ -74,11 +75,11 @@ In \(\eqref{eq:Sigmazbar}\), \(b\) is the correlation length, which should grow 
 \(J \rightarrow J_c\).
 
 \Question{} You can fit your data to the form of \(\eqref{eq:Sigmazbar}\) to find \(b\)
-using the curve fit function \texttt{lsqfit} from
-\href{https://github.com/JuliaNLSolvers/LsqFit.jl}{\texttt{LsqFit.jl}}.
+using the curve fit function \code{curve_fit} from
+\href{https://github.com/JuliaNLSolvers/LsqFit.jl}{\code{LsqFit.jl}}.
 
 You should include the statistical error on each correlator point in your inputs to
-\texttt{lsqfit}.
+\code{curve_fit}.
 You don't need to calculate the error on the returned value of the correlation length,
 \(b\), but this can be done with jackknife methods.
 
