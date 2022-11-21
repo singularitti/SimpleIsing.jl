@@ -11,7 +11,7 @@
 \usepackage{amssymb}
 \usepackage{graphicx}
 \usepackage{algorithm}
-\usepackage{bm}
+\usepackage{physics}
 \usepackage[cache=false]{minted}
 % \usepackage{xpatch} % See https://tex.stackexchange.com/a/657596/61591
 \usepackage{color}
@@ -65,10 +65,6 @@
 \newcommand{\irow}[1]{ % Inline row vector, See https://tex.stackexchange.com/a/200511/61591
   \begin{bsmallmatrix}#1\end{bsmallmatrix}
 }
-
-\newcommand{\sgbar}[1]{\hat{\sigma}_{\bar{v}_#1,N}}
-\newcommand*{\at}[2][\biggr]{#1|_{#2}} % See https://tex.stackexchange.com/a/64179/61591
-\newcommand{\Var}{\mathbb{V}}
 
 \makeatletter
 \newcommand\etc{etc\@ifnextchar.{}{.\@}}
