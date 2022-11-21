@@ -5,9 +5,9 @@ export spatialcorrelation, buildmodel, fit, applyfit
 
 function average(lattice::Lattice, dim)
     if dim == :x
-        return sum(eachcol(lattice)) / size(lattice, 2)  # Note we sum over `y`!
+        return map(sum, eachcol(lattice)) / size(lattice, 2)  # Note we sum over `y`!
     elseif dim == :y
-        return sum(eachrow(lattice)) / size(lattice, 1)  # Note we sum over `x`!
+        return map(sum, eachrow(lattice)) / size(lattice, 1)  # Note we sum over `x`!
     else
         throw(ArgumentError("argument `dim` must be either `x` or `y`!"))
     end
