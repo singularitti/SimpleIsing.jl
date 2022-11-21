@@ -22,8 +22,7 @@ function spincorrelation(lattice::Lattice)
     end
 end
 
-function buildmodel(lattice::Lattice)
-    m, n = size(lattice)
+function buildmodel(n)
     return function (z, params)
         a, b = float.(params)
         return @. a * (exp(-z / b) + exp(-(n - z) / b))
