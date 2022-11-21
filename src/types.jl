@@ -4,7 +4,7 @@ struct Lattice{T} <: AbstractMatrix{T}
     spins::Matrix{T}
 end
 
-states(::Type{<:Number}) = (1, -1)
+states(::Type{T}) where {T<:Number} = (one(T), -one(T))
 
 isvalid(spin) = spin in states(typeof(spin))
 
