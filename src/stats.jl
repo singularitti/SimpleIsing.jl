@@ -35,15 +35,9 @@ end
 
 timeaverage_spincor(trace) = z -> mean(spincor(lattice)(z) for lattice in trace)  # Time average
 
-function fit(trace, params)
-    m, n = size(trace[1])
-    model = Modeller(n)
-    𝐳 = 1:n
-    𝚺̄z = ensembleaverage(trace)
-    return curve_fit(model, 𝐳, 𝚺̄z, params)
-end
-
-function applyfit(trace, params)
+function preparedata(trace)
     n = size(trace[1], 1)
-    return Base.Fix2(Modeller(n), fit(trace, params).param)
+    𝐳 = 1:n
+    𝚺̄z = map(timeaverage_spincor(trace), 𝐳)
+    return 𝐳, 𝚺̄z
 end
