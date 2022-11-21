@@ -1,7 +1,7 @@
 using LsqFit: curve_fit
 using Statistics: mean
 
-export Modeller, spincor, ensembleaverage, fit, applyfit, average
+export Modeller, spincor, timeaverage_spincor, fit, applyfit, average
 
 struct Modeller{T}
     n::T
@@ -33,12 +33,7 @@ function spincor(lattice::Lattice)
     end
 end
 
-function ensembleaverage(trace)
-    m, n = size(trace[1])
-    return map(1:n) do z  # ⟨Σ(z)⟩ is a function z
-        mean(spincor(lattice)(z) for lattice in trace)  # Time average
-    end
-end
+timeaverage_spincor(trace) = z -> mean(spincor(lattice)(z) for lattice in trace)  # Time average
 
 function fit(trace, params)
     m, n = size(trace[1])
