@@ -5,11 +5,6 @@ using Statistics
 N = 64  # Size of the lattice
 lattice = Lattice(ones(N, N))
 β = 1
-# J = 0.425
-# nsteps = 8000
-# nsteps_thermal = 2000  # Number of steps needed to be thermalized
-# trace = simulate!(lattice, nsteps, β, J, 0, SwendsenWang())
-# fit(lattice, trace[nsteps_thermal:end], [0.2588312476412214, 32.53734520801327])
 𝐉 = [
     0.425,
     0.43,
@@ -26,10 +21,12 @@ lattice = Lattice(ones(N, N))
     0.5,
     0.6,
 ]
-params = map(𝐉) do J
+𝐛 = Float64[]
+for J in 𝐉
     nsteps = 8000
     nsteps_thermal = 2000  # Number of steps needed to be thermalized
     trace = simulate!(lattice, nsteps, β, J, 0, SwendsenWang())
-    fit(lattice, trace[nsteps_thermal:end], [0.2588312476412214, 32.53734520801327]).param
+    b = fit(lattice, trace[nsteps_thermal:end], [0.2588, 32.537]).param[2]
+    push!(𝐛, b)
 end
-paramplot(𝐉, [param[2] for param in params])
+paramplot(𝐉, 𝐛)
