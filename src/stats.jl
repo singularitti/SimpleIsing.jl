@@ -1,17 +1,23 @@
 using LsqFit: curve_fit
 using Statistics: mean
 
-export spatialcorrelation, buildmodel, fit
+export spatialcorrelation, buildmodel, fit, applyfit
 
-sigmax(lattice) = mean(lattice; dims=2)  # Note we sum over `y`!
-
-sigmay(lattice) = mean(lattice; dims=1)  # Note we sum over `x`!
+function sigma(lattice::Lattice, dim)
+    if dim == :x
+        return sum(eachcol(lattice)) / size(lattice, 2)  # Note we sum over `y`!
+    elseif dim == :y
+        return sum(eachrow(lattice)) / size(lattice, 1)  # Note we sum over `x`!
+    else
+        throw(ArgumentError("argument `dim` must be either `x` or `y`!"))
+    end
+end
 
 function spatialcorrelation(lattice::Lattice)
-    Σx, Σy = sigmax(lattice), sigmay(lattice)  # Note we sum over `y` and `x`, respectively
+    Σx, Σy = sigma(lattice, :x), sigma(lattice, :y)
     return function (z)
-        term1 = mean(Σx .* sigmax(circshift(lattice, (-z, 0))))
-        term2 = mean(Σy .* sigmay(circshift(lattice, (0, -z))))
+        term1 = mean(Σx .* sigma(circshift(lattice, (-z, 0)), :x))
+        term2 = mean(Σy .* sigma(circshift(lattice, (0, -z)), :y))
         return (term1 + term2) / 2
     end
 end
@@ -36,4 +42,10 @@ function fit(lattice::Lattice, trace, params)
     model = buildmodel(lattice)
     Σ̄z = ensembleaverage(trace)
     return curve_fit(model, 1:n, Σ̄z, params)
+end
+
+function applyfit(lattice::Lattice, trace, params)
+    m, n = size(lattice)
+    a, b = fit(lattice, trace, params).param
+    return z -> a * (exp.(-z ./ b) + exp.(-(n .- z) ./ b))
 end
