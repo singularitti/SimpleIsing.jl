@@ -1,7 +1,7 @@
 using LsqFit: curve_fit
 using Statistics: mean
 
-export spatialcorrelation, buildmodel, fit, applyfit
+export spincorrelation, buildmodel, ensembleaverage, fit, applyfit, average
 
 function average(lattice::Lattice, dim)
     if dim == :x
@@ -13,7 +13,7 @@ function average(lattice::Lattice, dim)
     end
 end
 
-function spatialcorrelation(lattice::Lattice)
+function spincorrelation(lattice::Lattice)
     Σx, Σy = average(lattice, :x), average(lattice, :y)
     return function (z)
         term1 = mean(Σx .* average(circshift(lattice, (-z, 0)), :x))
@@ -33,7 +33,7 @@ end
 function ensembleaverage(trace)
     m, n = size(trace[1])
     return map(1:n) do z  # ⟨Σ(z)⟩ is a function z
-        mean(spatialcorrelation(lattice)(z) for lattice in trace)  # Time average
+        mean(spincorrelation(lattice)(z) for lattice in trace)  # Time average
     end
 end
 
