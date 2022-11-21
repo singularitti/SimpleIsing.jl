@@ -1,7 +1,7 @@
 using LsqFit: curve_fit
 using Statistics: mean
 
-export spatialcorrelation, buildmodel, fit
+export spatialcorrelation, buildmodel, fit, applyfit
 
 function sigma(lattice::Lattice, dim)
     if dim == :x
@@ -42,4 +42,10 @@ function fit(lattice::Lattice, trace, params)
     model = buildmodel(lattice)
     Σ̄z = ensembleaverage(trace)
     return curve_fit(model, 1:n, Σ̄z, params)
+end
+
+function applyfit(lattice::Lattice, trace, params)
+    m, n = size(lattice)
+    a, b = fit(lattice, trace, params).param
+    return z -> a * (exp.(-z ./ b) + exp.(-(n .- z) ./ b))
 end
