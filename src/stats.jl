@@ -36,11 +36,12 @@ function ensembleaverage(trace)
     end
 end
 
-function fit(lattice::Lattice, trace, params)
-    m, n = size(lattice)
-    model = buildmodel(lattice)
-    Σ̄z = ensembleaverage(trace)
-    return curve_fit(model, 1:n, Σ̄z, params)
+function fit(trace, params)
+    m, n = size(trace[1])
+    model = buildmodel(n)
+    𝐳 = 1:n
+    𝚺̄z = ensembleaverage(trace)
+    return curve_fit(model, 𝐳, 𝚺̄z, params)
 end
 
 function applyfit(lattice::Lattice, trace, params)
