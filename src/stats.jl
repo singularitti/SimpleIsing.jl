@@ -3,7 +3,7 @@ using Statistics: mean
 
 export spatialcorrelation, buildmodel, fit, applyfit
 
-function sigma(lattice::Lattice, dim)
+function average(lattice::Lattice, dim)
     if dim == :x
         return sum(eachcol(lattice)) / size(lattice, 2)  # Note we sum over `y`!
     elseif dim == :y
@@ -14,10 +14,10 @@ function sigma(lattice::Lattice, dim)
 end
 
 function spatialcorrelation(lattice::Lattice)
-    Σx, Σy = sigma(lattice, :x), sigma(lattice, :y)
+    Σx, Σy = average(lattice, :x), average(lattice, :y)
     return function (z)
-        term1 = mean(Σx .* sigma(circshift(lattice, (-z, 0)), :x))
-        term2 = mean(Σy .* sigma(circshift(lattice, (0, -z)), :y))
+        term1 = mean(Σx .* average(circshift(lattice, (-z, 0)), :x))
+        term2 = mean(Σy .* average(circshift(lattice, (0, -z)), :y))
         return (term1 + term2) / 2
     end
 end
