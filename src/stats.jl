@@ -32,8 +32,9 @@ function spincor(lattice::Lattice)
         return (term1 + term2) / 2
     end
 end
+spincor(trace) = z -> [spincor(lattice)(z) for lattice in trace]
 
-timeaverage_spincor(trace) = z -> mean(spincor(lattice)(z) for lattice in trace)  # Time average
+timeaverage_spincor(trace) = z -> mean(spincor(trace)(z))  # Time average
 
 function preparedata(trace)
     n = size(trace[1], 1)
