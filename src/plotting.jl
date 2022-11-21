@@ -1,6 +1,6 @@
 using RecipesBase
 
-export magplot
+export magplot, paramplot
 
 @recipe function f(lattice::Lattice)
     yflip --> true  # Set the origin to the upper left corner, see https://github.com/MakieOrg/Makie.jl/issues/46
@@ -32,9 +32,8 @@ end
     markerstrokewidth --> 0
     xlims --> extrema(steps)
     ylims --> extrema(magnetization)
-    xguide --> "steps (after thermalization)"
-    yguide --> "magnetization"
-    fontfamily --> "Palatino"
+    xguide --> raw"$N$ (steps after thermalization)"
+    yguide --> raw"$M$ (magnetization)"
     guidefontsize --> 12
     tickfontsize --> 10
     legendfontsize --> 12
@@ -51,5 +50,30 @@ end
     @series begin
         label --> "spin down"
         findall(<=(_zero), magnetization), magnetization[magnetization .> 0]
+    end
+end
+
+@userplot ParamPlot
+@recipe function f(plot::ParamPlot)
+    # See http://juliaplots.org/RecipesBase.jl/stable/types/#User-Recipes-2
+    𝐉, 𝐛 = plot.args  # Extract `𝐉` and `𝐛` from the args
+    size --> (800, 500)
+    markersize --> 2
+    markerstrokewidth --> 0
+    xlims --> extrema(𝐉)
+    ylims --> extrema(𝐛)
+    xguide --> raw"$J = \bar{J} / k_B T$"
+    yguide --> raw"$b$ (parameter)"
+    guidefontsize --> 12
+    tickfontsize --> 10
+    legend --> :none
+    frame --> :box
+    palette --> :tab20
+    grid --> nothing
+    for type in (:scatter, :path)
+        @series begin
+            seriestype --> type
+            𝐉, 𝐛
+        end
     end
 end
