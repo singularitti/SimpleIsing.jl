@@ -10,8 +10,9 @@ export magplot, paramplot, corplot
     xguideposition --> :top  # Place xguide along top axis
     xmirror --> true  # Place xticks along top axis, see https://github.com/JuliaPlots/Plots.jl/issues/337
     yguide --> raw"$y$"
-    guidefontsize --> 8
-    tickfontsize --> 6
+    guidefontsize --> 10
+    tickfontsize --> 8
+    legendfontsize --> 8
     color --> :binary
     colorbar --> false
     frame --> :box
@@ -26,7 +27,7 @@ end
     magnetization = plot.args[end]  # Extract `magnetization` from the args
     # If we are passed two args, use the first as indices.
     steps = length(plot.args) == 2 ? plot.args[1] : eachindex(magnetization)
-    size --> (800, 500)
+    size --> (700, 400)
     seriestype --> :scatter
     markersize --> 2
     markerstrokewidth --> 0
@@ -34,9 +35,9 @@ end
     ylims --> extrema(magnetization)
     xguide --> raw"$N$ (steps after thermalization)"
     yguide --> raw"$M$ (magnetization)"
-    guidefontsize --> 12
-    tickfontsize --> 10
-    legendfontsize --> 12
+    guidefontsize --> 10
+    tickfontsize --> 8
+    legendfontsize --> 8
     legend_foreground_color --> nothing
     legend_position --> :right
     frame --> :box
@@ -57,15 +58,15 @@ end
 @recipe function f(plot::ParamPlot)
     # See http://juliaplots.org/RecipesBase.jl/stable/types/#User-Recipes-2
     𝐉, 𝐛 = plot.args  # Extract `𝐉` and `𝐛` from the args
-    size --> (800, 500)
+    size --> (700, 400)
     markersize --> 2
     markerstrokewidth --> 0
     xlims --> extrema(𝐉)
     ylims --> extrema(𝐛)
     xguide --> raw"$J = \bar{J} / k_B T$"
     yguide --> raw"$b$ (parameter)"
-    guidefontsize --> 12
-    tickfontsize --> 10
+    guidefontsize --> 10
+    tickfontsize --> 8
     legend --> :none
     frame --> :box
     palette --> :tab20
@@ -82,17 +83,17 @@ end
 @recipe function f(plot::CorPlot)
     # See http://juliaplots.org/RecipesBase.jl/stable/types/#User-Recipes-2
     𝐳, 𝐀 = plot.args  # Extract `𝐉` and `𝐛` from the args
-    size --> (800, 500)
+    size --> (700, 400)
     markersize --> 2
     markerstrokewidth --> 0
     xlims --> extrema(𝐳)
     xguide --> raw"$z$"
     yguide --> raw"$\langle \Sigma(z) \rangle = a \left(\exp(-z/b) + \exp(-(N-z)/b)\right)$"
-    guidefontsize --> 12
-    tickfontsize --> 10
-    legendfontsize --> 12
+    guidefontsize --> 10
+    tickfontsize --> 8
+    legendfontsize --> 8
     legend_foreground_color --> nothing
-    legend_position --> :top
+    legend_position --> :right
     frame --> :box
     palette --> :tab20
     grid --> nothing
