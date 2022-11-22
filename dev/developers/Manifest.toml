@@ -404,7 +404,7 @@ version = "1.1.1"
 
 [[deps.SimpleIsing]]
 deps = ["LsqFit", "RecipesBase", "Statistics"]
-git-tree-sha1 = "2bbc294e99b3cdd4d7d7d81c3862e21a7b9ec6bf"
+git-tree-sha1 = "32445c2e5663644e0b48ac5d95ee371820d44525"
 repo-rev = "main"
 repo-url = "https://github.com/singularitti/SimpleIsing.jl"
 uuid = "46c501a3-f641-4b41-8780-95b38626ad05"
