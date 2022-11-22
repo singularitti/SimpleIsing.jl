@@ -30,6 +30,7 @@ end
     size --> (700, 400)
     seriestype --> :scatter
     markersize --> 2
+    markerstrokecolor --> :auto
     markerstrokewidth --> 0
     xlims --> extrema(steps)
     ylims --> extrema(magnetization)
@@ -60,6 +61,7 @@ end
     𝐉, 𝐛 = plot.args  # Extract `𝐉` and `𝐛` from the args
     size --> (700, 400)
     markersize --> 2
+    markerstrokecolor --> :auto
     markerstrokewidth --> 0
     xlims --> extrema(𝐉)
     ylims --> extrema(𝐛)
@@ -85,6 +87,7 @@ end
     𝐳, 𝐀 = plot.args  # Extract `𝐉` and `𝐛` from the args
     size --> (700, 400)
     markersize --> 2
+    markerstrokecolor --> :auto
     markerstrokewidth --> 0
     xlims --> extrema(𝐳)
     xguide --> raw"$z$"
