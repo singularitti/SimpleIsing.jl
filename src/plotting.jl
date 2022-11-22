@@ -1,6 +1,6 @@
 using RecipesBase
 
-export magplot, paramplot
+export magplot, paramplot, corplot
 
 @recipe function f(lattice::Lattice)
     yflip --> true  # Set the origin to the upper left corner, see https://github.com/MakieOrg/Makie.jl/issues/46
@@ -75,5 +75,34 @@ end
             seriestype --> type
             𝐉, 𝐛
         end
+    end
+end
+
+@userplot CorPlot
+@recipe function f(plot::CorPlot)
+    # See http://juliaplots.org/RecipesBase.jl/stable/types/#User-Recipes-2
+    𝐳, 𝐀 = plot.args  # Extract `𝐉` and `𝐛` from the args
+    size --> (800, 500)
+    markersize --> 2
+    markerstrokewidth --> 0
+    xlims --> extrema(𝐳)
+    xguide --> raw"$z$"
+    yguide --> raw"$\langle \Sigma(z) \rangle = a \left(\exp(-z/b) + \exp(-(N-z)/b)\right)$"
+    guidefontsize --> 12
+    tickfontsize --> 10
+    legendfontsize --> 12
+    legend_foreground_color --> nothing
+    legend_position --> :top
+    frame --> :box
+    palette --> :tab20
+    grid --> nothing
+    @series begin
+        seriestype --> :scatter
+        𝐳, 𝐀
+    end
+    @series begin
+        seriestype --> :path
+        label := ""
+        𝐳, 𝐀
     end
 end
