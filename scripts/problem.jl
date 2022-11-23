@@ -1,8 +1,9 @@
 push!(LOAD_PATH, dirname(pwd()))
 
+using JackknifeAnalysis: JackknifeAnalysis, Population, PartitionSampler
 using LaTeXFigures: Figure, latexformat
 using LsqFit: curve_fit
-using Plots: plot, savefig
+using Plots
 using ProgressMeter: @showprogress
 using SimpleIsing: Lattice, SwendsenWang, Modeller, simulate!, spincor, paramplot!, corplot!
 using Statistics: mean, std
@@ -61,7 +62,7 @@ for (i, N) in enumerate(boxsizes)
         push!(𝚺z, Σz)
         𝚺̄z = map(mean, Σz)  # Vector, ensemble average ⟨Σ(z)⟩ for each z for this J for this N
         Σ[j, i] = 𝚺̄z
-        𝛔 = map(std, Σz)  # Vector, std √⟨(Σ(z) - 𝚺̄z)²⟩ for each z for this J for this N
+        𝛔 = map(Base.Fix2(JackknifeAnalysis.std, PartitionSampler(20)) ∘ Population, Σz)  # Vector, std √⟨(Σ(z) - 𝚺̄z)²⟩ for each z for this J for this N
         σ[j, :] = 𝛔
         a, b = curve_fit(Modeller(N), 𝐳, 𝚺̄z, [0.2588, 32.537]).param  # Parameters for ⟨Σ(z)⟩
         A[j, i] = a
