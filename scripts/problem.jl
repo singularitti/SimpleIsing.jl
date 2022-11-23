@@ -34,17 +34,11 @@ function plot_correlation(𝐚, 𝐛, 𝐉, 𝚺, N, yerr)
     plot()  # Start a new figure
     𝐳 = 1:N  # Each z
     return map(enumerate(zip(𝐚, 𝐛, 𝐉, 𝚺))) do (j, (a, b, J, sg))
-        scatter!(
-            𝐳,
-            sg;
-            label=raw"raw $\langle \Sigma(z) \rangle$",
-            markersize=2,
-            markerstrokewidth=0,
-        )
+        scatter!(𝐳, sg; label="", markersize=2, markerstrokewidth=0)
         corplot!(
             𝐳, Modeller(N)(𝐳, [a, b]); yerr=yerr[j, :], label=string(raw"$J = ", J, raw" $")
         )
-        ylims!(-Inf, 1)
+        ylims!(-Inf, 0.6)
         figname = string("correlation_N=", N, ".pdf")
         savefig(joinpath(plotsdir(), figname))
         clipboard(latexformat(Figure(figname; caption=raw"", label="fig:corr", width=0.8)))
