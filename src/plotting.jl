@@ -100,13 +100,5 @@ end
     frame --> :box
     palette --> :tab20
     grid --> nothing
-    @series begin
-        seriestype --> :scatter
-        𝐳, 𝐀
-    end
-    @series begin
-        seriestype --> :path
-        label := ""
-        𝐳, 𝐀
-    end
+    return 𝐳, 𝐀
 end
