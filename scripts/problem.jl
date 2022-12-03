@@ -36,7 +36,6 @@ function plot_correlation(𝐚, 𝐛, 𝐉, 𝚺, N, yerr)
         corplot!(
             𝐳, Modeller(N)(𝐳, [a, b]); yerr=yerr[j, :], label=string(raw"$J = ", J, raw" $")
         )
-        ylims!(-Inf, 0.6)
         figname = string("correlation_N=", N, ".pdf")
         savefig(joinpath(plotsdir(), figname))
         clipboard(latexformat(Figure(figname; caption=raw"", label="fig:corr", width=0.8)))
