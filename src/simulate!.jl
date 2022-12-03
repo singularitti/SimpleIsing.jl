@@ -7,7 +7,7 @@ struct SwendsenWang <: Algorithm end
 
 function simulate!(lattice::Lattice, β, J, B, ::Basic)
     for index in eachindex(lattice)
-        trial_spin = flipspin!(lattice, index)  # Trial move, no in-place update now!
+        trial_spin = flipspin(lattice, index)  # Trial move, no in-place update now!
         eᵢ_old = energy(lattice, index, J, B)
         eᵢ_new = energy(sum(neighborspins(lattice, index)), trial_spin, J, B)
         P = exp(-β * (eᵢ_new - eᵢ_old))
