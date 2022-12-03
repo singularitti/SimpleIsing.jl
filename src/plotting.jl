@@ -10,6 +10,7 @@ export magplot, paramplot, corplot
     xguideposition --> :top  # Place xguide along top axis
     xmirror --> true  # Place xticks along top axis, see https://github.com/JuliaPlots/Plots.jl/issues/337
     yguide --> raw"$y$"
+    tick_direction --> :out
     guidefontsize --> 10
     tickfontsize --> 8
     legendfontsize --> 8
