@@ -132,12 +132,33 @@ step through each atom in the array in turn:
 %
 Repeat the process many times until thermal equilibrium is achieved.
 
+\begin{figure}[hbt]
+    \centering
+    \begin{subfigure}{0.49\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{basic_J=0.455_t=0}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.49\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{basic_J=0.455_t=5000}
+    \end{subfigure}
+    \caption{Magnetization pattern of a \(64 \times 64\) array of ferromagnetic atoms in
+        thermal equilibrium and in the absence of an external magnetic field at \(t = 0\)
+        (left), and \(t = 5000\) (right), with \(J = 0.455\). Black/white squares indicate
+        spin up and spin down, respectively. The simulation is done using the \code{Basic}
+        algorithm.}
+    \label{fig:rand_J=0.455}
+\end{figure}
+
 In Snippet~\ref{lst:basic}, we use function \code{neighborspins} to find all the neighboring
 spins \(s_j\) of a specific spin \(s_i\). Notice we do not update the spin immediately
 since it is just a trial move at the beginning. We only update it until the probability of
 the flipping is larger than a (uniformly distributed between \(0\) and \(1\)) random number.
 Since for any fixed \(P\), the probability of generating a random number that is smaller
 than \(P\) is \(P\). Therefore, we accept the trial move with probability \(P\).
+We plot the results of one simple simulation in Figure~\ref{fig:rand_J=0.455},
+with the initial spins randomly choosen.
 
 \begin{algorithm}
     \caption{The Swendsen--Wang algorithm for simulating the Ising model.}
