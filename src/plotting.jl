@@ -26,16 +26,16 @@ end
 @userplot MagPlot
 @recipe function f(plot::MagPlot)
     # See http://juliaplots.org/RecipesBase.jl/stable/types/#User-Recipes-2
-    magnetization = plot.args[end]  # Extract `magnetization` from the args
+    trace = plot.args[end]  # Extract `magnetization` from the args
     # If we are passed two args, use the first as indices.
-    steps = length(plot.args) == 2 ? plot.args[1] : eachindex(magnetization)
+    steps = length(plot.args) == 2 ? plot.args[1] : eachindex(trace)
+    M = map(magnetization, trace)
     size --> (700, 400)
     seriestype --> :scatter
     markersize --> 2
     markerstrokecolor --> :auto
     markerstrokewidth --> 0
     xlims --> extrema(steps)
-    ylims --> extrema(magnetization)
     xguide --> raw"$N$ (steps after thermalization)"
     yguide --> raw"$M$ (magnetization)"
     guidefontsize --> 10
@@ -46,14 +46,14 @@ end
     frame --> :box
     palette --> :tab10
     grid --> nothing
-    _zero = zero(eltype(magnetization))
+    _zero = zero(eltype(M))
     @series begin
         label --> "spin up"
-        findall(>(_zero), magnetization), magnetization[magnetization .<= 0]
+        findall(>(_zero), M), M[M .<= 0]
     end
     @series begin
         label --> "spin down"
-        findall(<=(_zero), magnetization), magnetization[magnetization .> 0]
+        findall(<=(_zero), M), M[M .> 0]
     end
 end
 
