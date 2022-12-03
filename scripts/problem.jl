@@ -1,5 +1,3 @@
-push!(LOAD_PATH, dirname(pwd()))
-
 using JackknifeAnalysis: JackknifeAnalysis, Population, PartitionSampler
 using LaTeXFigures: Figure, latexformat
 using LsqFit: curve_fit
