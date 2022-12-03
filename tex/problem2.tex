@@ -98,19 +98,6 @@ algorithm we will discuss below.
 The \code{Basic} algorithm, as in Snippet~\ref{lst:basic},
 is the slowest one when doing the simulation. However, it is easy to implement
 and less error-prone.
-The Metropolis--Hastings approach to the Ising model, which completely avoids the use of the mean
-field approximation, is based on the following algorithm, i.e.,
-step through each atom in the array in turn:
-%
-\begin{itemize}
-    \item For a given atom, evaluate the change in energy of the system, \(\Delta E\), when
-          the atomic spin is flipped.
-    \item If \(\Delta E < 0\) (lowering energy), then flip the spin.
-    \item If \(\Delta E > 0\) then flip the spin with probability
-          \(P=\exp(-\beta \Delta E)\).
-\end{itemize}
-%
-Repeat the process many times until thermal equilibrium is achieved.
 
 \begin{algorithm}
     \caption{The simplest algorithm: flipping spins one by one.}
@@ -130,6 +117,20 @@ Repeat the process many times until thermal equilibrium is achieved.
         end
     \end{juliacode}
 \end{algorithm}
+
+The Metropolis--Hastings approach to the Ising model, which completely avoids the use of the mean
+field approximation, is based on the following algorithm, i.e.,
+step through each atom in the array in turn:
+%
+\begin{itemize}
+    \item For a given atom, evaluate the change in energy of the system, \(\Delta E\), when
+          the atomic spin is flipped.
+    \item If \(\Delta E < 0\) (lowering energy), then flip the spin.
+    \item If \(\Delta E > 0\) then flip the spin with probability
+          \(P=\exp(-\beta \Delta E)\).
+\end{itemize}
+%
+Repeat the process many times until thermal equilibrium is achieved.
 
 In Snippet~\ref{lst:basic}, we use function \code{neighborspins} to find all the neighboring
 spins \(s_j\) of a specific spin \(s_i\). Notice we do not update the spin immediately
