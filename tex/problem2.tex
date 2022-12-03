@@ -54,6 +54,90 @@ where there is no spontaneous magnetization, \(\expval{\Sigma(z)}\) has the form
     \expval{\Sigma(z)} = a \bigl(\exp(-z / b) + \exp(-(N - z) / b)\bigr).
 \end{equation}
 
+First, we need to write the cluster algorithm for the Ising model.
+Consider a 2D lattice of atoms in the presence of a \(z\)-directed magnetic field of strength
+\(B\). Suppose that all atoms are identical spin-\(1/2\) systems.
+We define the lattice in Snippet~\ref{lst:lattice},
+where it is a \code{Matrix} containing spins of values \(s_i = 1\) (spin up) or
+\(s_i = -1\) (spin down), where \(s_i\) is (twice) the \(z\)-component of the \(i\)th
+atomic spin. The total energy of the system is written as:
+%
+\begin{equation}
+    E = -J \sum_{\langle i j \rangle} s_i s_j - B \sum_{i} s_i,
+\end{equation}
+%
+where \(J\) is the exchange energy.
+
+%
+\begin{algorithm}
+    \caption{Define the 2D lattice for the Ising model.}
+    \label{lst:lattice}
+    \begin{juliacode}
+        struct Lattice{T} <: AbstractMatrix{T}
+            spins::Matrix{T}
+        end
+    \end{juliacode}
+\end{algorithm}
+%
+And for different simulation algorithms, we define several types, as in
+Snippet~\ref{lst:alg}, where \code{Basic} is the simplest algorithm
+denoting flipping spins one by one, and \code{SwendsenWang} is the cluster
+algorithm we will discuss below.
+
+\begin{algorithm}
+    \caption{Different simulation algorithms.}
+    \label{lst:alg}
+    \begin{juliacode}
+        abstract type Algorithm end
+        struct Basic <: Algorithm end
+        struct Checkerboard <: Algorithm end
+        struct SwendsenWang <: Algorithm end
+    \end{juliacode}
+\end{algorithm}
+
+The \code{Basic} algorithm, as in Snippet~\ref{lst:basic},
+is the slowest one when doing the simulation. However, it is easy to implement
+and less error-prone.
+The Metropolis--Hastings approach to the Ising model, which completely avoids the use of the mean
+field approximation, is based on the following algorithm, i.e.,
+step through each atom in the array in turn:
+%
+\begin{itemize}
+    \item For a given atom, evaluate the change in energy of the system, \(\Delta E\), when
+          the atomic spin is flipped.
+    \item If \(\Delta E < 0\) (lowering energy), then flip the spin.
+    \item If \(\Delta E > 0\) then flip the spin with probability
+          \(P=\exp(-\beta \Delta E)\).
+\end{itemize}
+%
+Repeat the process many times until thermal equilibrium is achieved.
+
+\begin{algorithm}
+    \caption{The simplest algorithm: flipping spins one by one.}
+    \label{lst:basic}
+    \begin{juliacode}
+        function simulate!(lattice::Lattice, β, J, B, ::Basic)
+            for index in eachindex(lattice)
+                trial_spin = flipspin!(lattice, index)  # Trial move
+                eᵢ_old = energy(lattice, index, J, B)
+                eᵢ_new = energy(sum(neighborspins(lattice, index)), trial_spin, J, B)
+                P = exp(-β * (eᵢ_new - eᵢ_old))
+                if P > rand()
+                    lattice[index] = trial_spin  # Accept the trial move
+                end
+            end
+            return lattice
+        end
+    \end{juliacode}
+\end{algorithm}
+
+In Snippet~\ref{lst:basic}, we use function \code{neighborspins} to find all the neighboring
+spins \(s_j\) of a specific spin \(s_i\). Notice we do not update the spin immediately
+since it is just a trial move at the beginning. We only update it until the probability of
+the flipping is larger than a (uniformly distributed between \(0\) and \(1\)) random number.
+Since for any fixed \(P\), the probability of generating a random number that is smaller
+than \(P\) is \(P\). Therefore, we are accepting the trial move with a probability \(P\).
+
 \subsection{Measuring this observable}
 
 Measure the correlation in \(\eqref{eq:Sigmaz}\). Even
