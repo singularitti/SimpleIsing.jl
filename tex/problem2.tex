@@ -11,7 +11,7 @@ partition function could be written as
 in the Swendsen--Wang algorithm,
 where \(\langle i j \rangle\) refers to all nearest neighbour pairs of atoms.
 In this problem, you should start from this code and add measurements to measure the
-correlation length near the critical value of \(J\), or \(p=1 - \exp(-2J)\).
+correlation length near the critical value of \(J\), or \(P=1 - \exp(-2J)\).
 
 As the Ising model approaches its critical point, the size of spatial clusters grows. It is
 this growth in the average size of clusters responsible for diverging correlation
@@ -137,7 +137,46 @@ spins \(s_j\) of a specific spin \(s_i\). Notice we do not update the spin immed
 since it is just a trial move at the beginning. We only update it until the probability of
 the flipping is larger than a (uniformly distributed between \(0\) and \(1\)) random number.
 Since for any fixed \(P\), the probability of generating a random number that is smaller
-than \(P\) is \(P\). Therefore, we are accepting the trial move with probability \(P\).
+than \(P\) is \(P\). Therefore, we accept the trial move with probability \(P\).
+
+\begin{algorithm}
+    \caption{The Swendsen--Wang algorithm for simulating the Ising model.}
+    \label{lst:cluster}
+    \begin{juliacode}
+        function simulate!(lattice::Lattice, β, J, B, ::SwendsenWang)
+            index = rand(CartesianIndices(lattice))
+            P = 1 - exp(-β * (2J + B))
+            recursive_flipspin!(lattice, index, lattice[index], P)
+            return lattice
+        end
+    \end{juliacode}
+\end{algorithm}
+
+For the cluster algorithm, we need to adopt an recursive scheme, as shown in
+Snippet~\ref{lst:cluster}. The recursive spin-flipping method is defined in
+Snippet~\ref{lst:recur}.
+
+In each timestep, we randomly select one atom, flip its spin, and for each of its four
+neighbors, see if it has a ``link'' connecting the spins (i.e., the ``bond'' is \emph{open}).
+If so, flip that spin with probability \(P = 1 - \exp(-2J)\).
+Recursively repeat these steps until we have reached the end of the tree where
+every ``bond'' is closed.
+
+\begin{algorithm}
+    \caption{The recursive spin-flipping method.}
+    \label{lst:recur}
+    \begin{juliacode}
+        function recursive_flipspin!(lattice::Lattice, index, spin₀, P)
+            spin = flipspin!(lattice, index)
+            for index′ in findneighbors(lattice, index)
+                if lattice[index′] == spin₀ && P > rand()
+                    recursive_flipspin!(lattice, index′, spin₀, P)
+                end
+            end
+            return spin
+        end
+    \end{juliacode}
+\end{algorithm}
 
 \subsection{Measuring this observable}
 
