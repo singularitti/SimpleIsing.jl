@@ -1,6 +1,6 @@
 \section{Correlations in the 2D Ising Model}
 
-We discussed the the cluster algorithm for the 2d Ising model in class. We saw that the
+We discussed the cluster algorithm for the 2d Ising model in class. We saw that the
 partition function could be written as
 %
 \begin{equation}
@@ -14,8 +14,8 @@ In this problem, you should start from this code and add measurements to measure
 correlation length near the critical value of \(J\), or \(p=1 - \exp(-2J)\).
 
 As the Ising model approaches its critical point, the size of spatial clusters grows. It is
-this growth in the average size of clusters which is responsible for diverging correlation
-length at \(T_c\) and the corresponding second order phase transition. The cluster algorithm
+this growth in the average size of clusters responsible for diverging correlation
+length at \(T_c\) and the corresponding second-order phase transition. The cluster algorithm
 avoids the critical slowing down that comes from the slow evolution through phase space of
 the simple, local site Metropolis algorithm.
 
@@ -136,7 +136,7 @@ spins \(s_j\) of a specific spin \(s_i\). Notice we do not update the spin immed
 since it is just a trial move at the beginning. We only update it until the probability of
 the flipping is larger than a (uniformly distributed between \(0\) and \(1\)) random number.
 Since for any fixed \(P\), the probability of generating a random number that is smaller
-than \(P\) is \(P\). Therefore, we are accepting the trial move with a probability \(P\).
+than \(P\) is \(P\). Therefore, we are accepting the trial move with probability \(P\).
 
 \subsection{Measuring this observable}
 
@@ -147,7 +147,7 @@ reasonable choice.
 
 When you measure \(\eqref{eq:Sigmaz}\) on a configuration, you will end up with \(N\)
 values, one for each value of \(z\). For each value of \(z\), you can also determine the
-error on the average value, using the statistical methods of Problem Set 3.
+error on the average value using the statistical methods of Problem Set 3.
 
 \Question{} Measure \(\eqref{eq:Sigmaz}\) on systems with values for \(J\) of \(0.435\),
 \(0.430\), \(0.425\). (Note that the critical value is \(J_c = 0.4406868\) and higher
