@@ -33,8 +33,8 @@ function simulate!(lattice::Lattice, β, J, B, ::Checkerboard)
 end
 function simulate!(lattice::Lattice, β, J, B, ::SwendsenWang)
     index = rand(CartesianIndices(lattice))  # Randomly select an atom from `lattice`
-    p = 1 - exp(-β * (2J + B))
-    recursive_flipspin!(lattice, index, lattice[index], p)
+    P = 1 - exp(-β * (2J + B))
+    recursive_flipspin!(lattice, index, lattice[index], P)
     return lattice
 end
 function simulate!(lattice::Lattice, n, β, J, B, alg::Algorithm)
@@ -59,11 +59,11 @@ function flipspin!(lattice::Lattice, index::CartesianIndex)
 end
 flipspin!(lattice::Lattice, i, j) = flipspin!(lattice, CartesianIndex(i, j))
 # Flip a spin in-place recursively
-function recursive_flipspin!(lattice::Lattice, index::CartesianIndex, spin₀, p)
+function recursive_flipspin!(lattice::Lattice, index::CartesianIndex, spin₀, P)
     spin = flipspin!(lattice, index)
     for index′ in findneighbors(lattice, index)
-        if lattice[index′] == spin₀ && p > rand()
-            recursive_flipspin!(lattice, index′, spin₀, p)  # Recursive call, do not `return` here!
+        if lattice[index′] == spin₀ && P > rand()
+            recursive_flipspin!(lattice, index′, spin₀, P)  # Recursive call, do not `return` here!
         end
     end
     return spin
