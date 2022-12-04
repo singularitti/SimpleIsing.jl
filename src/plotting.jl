@@ -25,11 +25,15 @@ end
 
 @userplot MagPlot
 @recipe function f(plot::MagPlot)
+    # See http://juliaplots.org/RecipesBase.jl/stable/types/#User-Recipes-2
+    trace = plot.args[end]  # Extract trace from the args
+    # If we are passed two args, we use the first as labels
+    steps = length(plot.args) == 2 ? plot.args[1] : eachindex(trace)
     size --> (700, 400)
     markersize --> 2
     markerstrokecolor --> :auto
     markerstrokewidth --> 0
-    xlims --> (1, Inf)
+    xlims --> extrema(steps)
     xguide --> raw"$N$ (steps after thermalization)"
     yguide --> raw"$M$ (magnetization)"
     guidefontsize --> 10
@@ -40,18 +44,17 @@ end
     frame --> :box
     palette --> :tab20
     grid --> nothing
-    # See http://juliaplots.org/RecipesBase.jl/stable/types/#User-Recipes-2
-    trace = plot.args[end]  # Extract trace from the args
     𝐌 = map(magnetization, trace)
     𝟘 = zero(eltype(𝐌))
-    spin_up, spin_down = findall(>(𝟘), 𝐌), findall(<=(𝟘), 𝐌)
-    for (steps, label) in zip((spin_up, spin_down), ("spin up", "spin down"))
-        if !isempty(steps)
-            average = mean(𝐌[steps])
+    f = step -> minimum(steps) <= step <= maximum(steps)
+    up_steps, down_steps = filter(f, findall(>(𝟘), 𝐌)), filter(f, findall(<=(𝟘), 𝐌))
+    for (selected_steps, label) in zip((up_steps, down_steps), ("spin up", "spin down"))
+        if !isempty(selected_steps)
+            average = mean(𝐌[selected_steps])
             @series begin
                 seriestype --> :scatter
                 label --> label * ", average = " * string(average)[1:5]
-                steps, 𝐌[steps]
+                selected_steps, 𝐌[selected_steps]
             end
             @series begin
                 seriestype --> :hline
