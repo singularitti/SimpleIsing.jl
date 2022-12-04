@@ -30,27 +30,27 @@ end
     markersize --> 2
     markerstrokecolor --> :auto
     markerstrokewidth --> 0
-    xlims --> extrema(steps)
     xguide --> raw"$N$ (steps after thermalization)"
     yguide --> raw"$M$ (magnetization)"
     guidefontsize --> 10
     tickfontsize --> 8
     legendfontsize --> 8
     legend_foreground_color --> nothing
-    legend_position --> :right
+    legend_position --> :topright
     frame --> :box
     palette --> :tab10
     grid --> nothing
     # See http://juliaplots.org/RecipesBase.jl/stable/types/#User-Recipes-2
     trace = plot.args[end]  # Extract trace from the args
-    M = map(magnetization, trace)
-    𝟘 = zero(eltype(M))
-    spin_up, spin_down = findall(>(𝟘), M), findall(<=(𝟘), M)
+    𝐌 = map(magnetization, trace)
+    𝟘 = zero(eltype(𝐌))
+    spin_up, spin_down = findall(>(𝟘), 𝐌), findall(<=(𝟘), 𝐌)
     for (steps, label) in zip((spin_up, spin_down), ("spin up", "spin down"))
         if !isempty(steps)
             @series begin
+                xlims --> extrema(steps)
                 label --> label
-                steps, M[steps]
+                steps, 𝐌[steps]
             end
         end
     end
