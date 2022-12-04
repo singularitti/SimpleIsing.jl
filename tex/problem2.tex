@@ -177,6 +177,29 @@ The mean value of the magnetization after thermalization is around \(-0.78\).
     \label{fig:mag_J=0.455}
 \end{figure}
 
+\begin{figure}[hbt]
+    \centering
+    \includegraphics[width=0.9\textwidth]{basic_J=0.41_mag_t>1000}
+    \caption{Magnetization of a \(64 \times 64\) array of ferromagnetic atoms in thermal
+        equilibrium and in the absence of an external magnetic field as a function of
+        simulation timesteps (\(t\) from \(1000\) to \(5000\)). The temperature is well
+        above the critical temperature. The mean value of the magnetization after
+        thermalization is plotted in a lighter color.}
+    \label{fig:mag_J=0.41}
+\end{figure}
+
+Now, we select a temperature that is well above the critical temperature \(T_c\),
+i.e., \(J < J_c\), to see how the system evolves as a function of time.
+For example, we choose \(J = 0.41\). At this temperature, the net magnetization should
+be \(0\). We expect a magnetization pattern where the black (up) and
+white (down) spins have roughly the same number after thermalization.
+The initial lattice we chose is an all-black pattern. That is, the net magnetization
+is \(1\). We let it evolve and see how thermal fluctuations turn the lattice into
+a system with zero net magnetization.
+We plot the magnetization as a function of time in Figure~\ref{fig:mag_J=0.41}.
+As it shows, the mean value of spin-up is \(0.155\), and that of spin-down is \(-0.14\).
+So the total mean value will be around \(0\), as expected.
+
 \begin{algorithm}
     \caption{The Swendsen--Wang algorithm for simulating the Ising model.}
     \label{lst:cluster}
