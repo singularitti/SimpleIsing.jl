@@ -38,9 +38,11 @@ function simulate!(lattice::Lattice, β, J, B, ::SwendsenWang)
     return lattice
 end
 function simulate!(lattice::Lattice, n, β, J, B, alg::Algorithm)
-    return map(1:n) do _
+    init = Base.vect(deepcopy(lattice))
+    steps = map(1:n) do _
         deepcopy(simulate!(lattice, β, J, B, alg))  # Remember to `deepcopy`!
     end
+    return append!(init, steps)
 end
 
 function flipspin(spin)
