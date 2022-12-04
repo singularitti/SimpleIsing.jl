@@ -62,24 +62,6 @@ and less error-prone.
     \end{juliacode}
 \end{algorithm}
 
-\begin{figure}[hbt]
-    \centering
-    \begin{subfigure}{0.49\textwidth}
-        \centering
-        \includegraphics[width=\linewidth]{basic_J=0.455_t=0}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}{0.49\textwidth}
-        \centering
-        \includegraphics[width=\linewidth]{basic_J=0.455_t=5000}
-    \end{subfigure}
-    \caption{Magnetization pattern of a \(64 \times 64\) array of ferromagnetic atoms in the
-        absence of an external magnetic field at \(t = 0\) (left), and \(t = 5000\) (right,
-        thermal equilibrium), with \(J = 0.455\). Black/white squares indicate spin up and
-        spin down, respectively. The simulation is done using the \code{Basic} algorithm.}
-    \label{fig:rand_J=0.455}
-\end{figure}
-
 The Metropolis--Hastings approach to the Ising model, which completely avoids the use of the mean
 field approximation, is based on the following algorithm, i.e.,
 step through each atom in the array in turn:
@@ -100,6 +82,24 @@ since it is just a trial move at the beginning. We only update it until the prob
 the flipping is larger than a (uniformly distributed between \(0\) and \(1\)) random number.
 Since for any fixed \(P\), the probability of generating a random number that is smaller
 than \(P\) is \(P\). Therefore, we accept the trial move with probability \(P\).
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.49\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{basic_J=0.455_t=0}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.49\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{basic_J=0.455_t=5000}
+    \end{subfigure}
+    \caption{Magnetization pattern of a \(64 \times 64\) array of ferromagnetic atoms in the
+        absence of an external magnetic field at \(t = 0\) (left), and \(t = 5000\) (right,
+        thermal equilibrium), with \(J = 0.455\). Black/white squares indicate spin up and
+        spin down, respectively. The simulation is done using the \code{Basic} algorithm.}
+    \label{fig:rand_J=0.455}
+\end{figure}
 
 We plot the results of one simple simulation in Figure~\ref{fig:rand_J=0.455},
 with the initial spins randomly chosen.
@@ -144,16 +144,6 @@ We plot the magnetization as a function of time in Figure~\ref{fig:mag_J=0.41}.
 As it shows, the mean value of spin-up is \(0.155\), and that of spin-down is \(-0.14\).
 So the total mean value will be around \(0\), as expected.
 
-However, if we select a temperature that is not that far from the critical temperature,
-we may have net magnetization larger than zero even after \(5000\) steps.
-For example, now we choose \(J = 0.435\), which is close to \(J_c\), and redo the
-simulation.
-If we plot the magnetization as a function of time in Figure~\ref{fig:mag_J=0.435},
-we can see even after \(5000\) steps, the values of spin-up and spin-down still do
-not converge. Thus, no thermal equilibrium is achieved in this time evolution.
-In conclusion, we are observing the critical slowing down of the \code{Basic}
-Metropolis algorithm.
-
 \begin{figure}[hbt]
     \centering
     \includegraphics[width=0.9\textwidth]{basic_J=0.435_mag_t>1000}
@@ -165,6 +155,16 @@ Metropolis algorithm.
         steps.}
     \label{fig:mag_J=0.435}
 \end{figure}
+
+However, if we select a temperature that is not that far from the critical temperature,
+we may have net magnetization larger than zero even after \(5000\) steps.
+For example, now we choose \(J = 0.435\), which is close to \(J_c\), and redo the
+simulation.
+If we plot the magnetization as a function of time in Figure~\ref{fig:mag_J=0.435},
+we can see even after \(5000\) steps, the values of spin-up and spin-down still do
+not converge. Thus, no thermal equilibrium is achieved in this time evolution.
+In conclusion, we are observing the critical slowing down of the \code{Basic}
+Metropolis algorithm.
 
 \begin{figure}[hbt]
     \centering
@@ -188,6 +188,12 @@ mentioned above in Figure~\ref{fig:t_5000}. As we can see, for the \(J = 0.41\) 
 distribution of up and down spins are more uniform, while for the \(J = 0.435\) case, there
 are clearly clusters of up and down spins, leading to net magnetization.
 
+As the Ising model approaches its critical point, the size of spatial clusters grows. It is
+this growth in the average size of clusters responsible for the diverging correlation
+length at \(T_c\) and the corresponding second-order phase transition. The cluster algorithm
+avoids the critical slowing down that comes from the slow evolution through phase space of
+the simple, local site Metropolis algorithm.
+
 \begin{algorithm}
     \caption{The Swendsen--Wang algorithm for simulating the Ising model.}
     \label{lst:cluster}
@@ -201,12 +207,6 @@ are clearly clusters of up and down spins, leading to net magnetization.
     \end{juliacode}
 \end{algorithm}
 
-As the Ising model approaches its critical point, the size of spatial clusters grows. It is
-this growth in the average size of clusters responsible for diverging correlation
-length at \(T_c\) and the corresponding second-order phase transition. The cluster algorithm
-avoids the critical slowing down that comes from the slow evolution through phase space of
-the simple, local site Metropolis algorithm.
-
 For the cluster algorithm, we need to adopt a recursive scheme, as shown in
 Snippet~\ref{lst:cluster}. The recursive spin-flipping method is defined in
 Snippet~\ref{lst:recur}.
@@ -217,7 +217,7 @@ If so, flip that spin with probability \(P = 1 - \exp(-2J)\).
 Recursively repeat these steps until we have reached the end of the tree where
 every ``bond'' is closed.
 
-\begin{algorithm}
+\begin{algorithm}[H]
     \caption{The recursive spin-flipping method.}
     \label{lst:recur}
     \begin{juliacode}
@@ -233,6 +233,12 @@ every ``bond'' is closed.
     \end{juliacode}
 \end{algorithm}
 
+Then we use the cluster (Swendsen--Wang) algorithm to calculate the magnetization as a
+function of time for the \(J = 0.435\) case. The results are plotted in
+Figure~\ref{fig:mag_J=0.435_cluster}. As shown in the figure, the magnetization is rapidly
+switching between net positive and negative states, and the averages of these states are
+\(0.444\) and \(-0.44\), converging to zero much faster than the \code{Basic} algorithm.
+
 \begin{figure}[hbt]
     \centering
     \includegraphics[width=0.9\textwidth]{cluster_J=0.435_mag_t>1000}
@@ -244,9 +250,3 @@ every ``bond'' is closed.
         algorithm.}
     \label{fig:mag_J=0.435_cluster}
 \end{figure}
-
-Then we use the cluster (Swendsen--Wang) algorithm to calculate the magnetization as a
-function of time for the \(J = 0.435\) case. The results are plotted in
-Figure~\ref{fig:mag_J=0.435_cluster}. As shown in the figure, the magnetization is rapidly
-switching between net positive and negative states, and the averages of these states are
-\(0.444\) and \(-0.44\), converging to zero much faster than the \code{Basic} algorithm.
