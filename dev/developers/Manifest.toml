@@ -404,7 +404,7 @@ version = "1.1.1"
 
 [[deps.SimpleIsing]]
 deps = ["LsqFit", "RecipesBase", "Statistics"]
-git-tree-sha1 = "8e6e3400bb0bc05d7bf4a5c58bff638b23b3d92e"
+git-tree-sha1 = "01b008c6c2babb00996d9c54537d9ee9e0c59c1e"
 repo-rev = "main"
 repo-url = "https://github.com/singularitti/SimpleIsing.jl"
 uuid = "46c501a3-f641-4b41-8780-95b38626ad05"
@@ -463,9 +463,9 @@ version = "0.33.21"
 
 [[deps.StatsFuns]]
 deps = ["ChainRulesCore", "HypergeometricFunctions", "InverseFunctions", "IrrationalConstants", "LogExpFunctions", "Reexport", "Rmath", "SpecialFunctions"]
-git-tree-sha1 = "89a3bfe98f5400f4ff58bb5cd1a9e46f95d08352"
+git-tree-sha1 = "ab6083f09b3e617e34a956b43e9d51b824206932"
 uuid = "4c63d2b9-4356-54db-8cca-17b64c39e42c"
-version = "1.1.0"
+version = "1.1.1"
 
 [[deps.SuiteSparse]]
 deps = ["Libdl", "LinearAlgebra", "Serialization", "SparseArrays"]
