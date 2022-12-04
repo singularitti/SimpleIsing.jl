@@ -42,18 +42,17 @@ end
     palette --> :tab10
     grid --> nothing
     # See http://juliaplots.org/RecipesBase.jl/stable/types/#User-Recipes-2
-    trace = plot.args[end]  # Extract `magnetization` from the args
-    # If we are passed two args, use the first as indices.
-    steps = length(plot.args) == 2 ? plot.args[1] : eachindex(trace)
+    trace = plot.args[end]  # Extract trace from the args
     M = map(magnetization, trace)
-    _zero = zero(eltype(M))
-    @series begin
-        label --> "spin up"
-        findall(>(_zero), M), M[M .<= 0]
-    end
-    @series begin
-        label --> "spin down"
-        findall(<=(_zero), M), M[M .> 0]
+    𝟘 = zero(eltype(M))
+    spin_up, spin_down = findall(>(𝟘), M), findall(<=(𝟘), M)
+    for (steps, label) in zip((spin_up, spin_down), ("spin up", "spin down"))
+        if !isempty(steps)
+            @series begin
+                label --> label
+                steps, M[steps]
+            end
+        end
     end
 end
 
