@@ -26,19 +26,19 @@ end
 @userplot MagPlot
 @recipe function f(plot::MagPlot)
     size --> (700, 400)
-    seriestype --> :scatter
     markersize --> 2
     markerstrokecolor --> :auto
     markerstrokewidth --> 0
+    xlims --> (1, Inf)
     xguide --> raw"$N$ (steps after thermalization)"
     yguide --> raw"$M$ (magnetization)"
     guidefontsize --> 10
     tickfontsize --> 8
     legendfontsize --> 8
     legend_foreground_color --> nothing
-    legend_position --> :topright
+    legend_position --> :bottomright
     frame --> :box
-    palette --> :tab10
+    palette --> :tab20
     grid --> nothing
     # See http://juliaplots.org/RecipesBase.jl/stable/types/#User-Recipes-2
     trace = plot.args[end]  # Extract trace from the args
@@ -47,10 +47,17 @@ end
     spin_up, spin_down = findall(>(𝟘), 𝐌), findall(<=(𝟘), 𝐌)
     for (steps, label) in zip((spin_up, spin_down), ("spin up", "spin down"))
         if !isempty(steps)
+            average = mean(𝐌[steps])
             @series begin
-                xlims --> extrema(steps)
-                label --> label
+                seriestype --> :scatter
+                label --> label * ", average = " * string(average)[1:5]
                 steps, 𝐌[steps]
+            end
+            @series begin
+                seriestype --> :hline
+                z_order --> :back
+                label --> ""
+                Base.vect(average)
             end
         end
     end
