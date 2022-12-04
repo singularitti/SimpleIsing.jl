@@ -143,11 +143,10 @@ Repeat the process many times until thermal equilibrium is achieved.
         \centering
         \includegraphics[width=\linewidth]{basic_J=0.455_t=5000}
     \end{subfigure}
-    \caption{Magnetization pattern of a \(64 \times 64\) array of ferromagnetic atoms in
-        thermal equilibrium and in the absence of an external magnetic field at \(t = 0\)
-        (left), and \(t = 5000\) (right), with \(J = 0.455\). Black/white squares indicate
-        spin up and spin down, respectively. The simulation is done using the \code{Basic}
-        algorithm.}
+    \caption{Magnetization pattern of a \(64 \times 64\) array of ferromagnetic atoms in the
+        absence of an external magnetic field at \(t = 0\) (left), and \(t = 5000\) (right,
+        thermal equilibrium), with \(J = 0.455\). Black/white squares indicate spin up and
+        spin down, respectively. The simulation is done using the \code{Basic} algorithm.}
     \label{fig:rand_J=0.455}
 \end{figure}
 
@@ -157,8 +156,26 @@ since it is just a trial move at the beginning. We only update it until the prob
 the flipping is larger than a (uniformly distributed between \(0\) and \(1\)) random number.
 Since for any fixed \(P\), the probability of generating a random number that is smaller
 than \(P\) is \(P\). Therefore, we accept the trial move with probability \(P\).
+
 We plot the results of one simple simulation in Figure~\ref{fig:rand_J=0.455},
-with the initial spins randomly choosen.
+with the initial spins randomly chosen.
+As we can see, since the temperature is lower than \(T_c\) (\(J > J_c\)),
+the system will converge to an equilibrium state where there is net magnetization.
+That is, most of the spins on the right are down (white).
+If we plot the magnetization, which is the average value of the spins as a function
+of simulation timesteps, as shown in Figure~\ref{fig:mag_J=0.455}.
+The mean value of the magnetization after thermalization is around \(-0.78\).
+
+\begin{figure}[hbt]
+    \centering
+    \includegraphics[width=0.9\textwidth]{basic_J=0.455_mag_t>1000}
+    \caption{Magnetization of a \(64 \times 64\) array of ferromagnetic atoms in thermal
+        equilibrium and in the absence of an external magnetic field as a function of
+        simulation timesteps (\(t\) from \(1000\) to \(5000\)). The temperature is below the
+        critical temperature. The mean value of the magnetization after thermalization is
+        plotted in a lighter color.}
+    \label{fig:mag_J=0.455}
+\end{figure}
 
 \begin{algorithm}
     \caption{The Swendsen--Wang algorithm for simulating the Ising model.}
@@ -173,7 +190,7 @@ with the initial spins randomly choosen.
     \end{juliacode}
 \end{algorithm}
 
-For the cluster algorithm, we need to adopt an recursive scheme, as shown in
+For the cluster algorithm, we need to adopt a recursive scheme, as shown in
 Snippet~\ref{lst:cluster}. The recursive spin-flipping method is defined in
 Snippet~\ref{lst:recur}.
 
