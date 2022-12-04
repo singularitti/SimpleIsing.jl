@@ -47,7 +47,7 @@ end
     𝐌 = map(magnetization, trace)
     𝟘 = zero(eltype(𝐌))
     f = step -> minimum(steps) <= step <= maximum(steps)
-    up_steps, down_steps = filter(f, findall(>(𝟘), 𝐌)), filter(f, findall(<=(𝟘), 𝐌))
+    up_steps, down_steps = filter(f, findall(>(𝟘), 𝐌)), filter(f, findall(<(𝟘), 𝐌))
     for (selected_steps, label) in zip((up_steps, down_steps), ("spin up", "spin down"))
         if !isempty(selected_steps)
             average = mean(𝐌[selected_steps])
