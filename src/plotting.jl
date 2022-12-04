@@ -34,7 +34,7 @@ end
     markerstrokecolor --> :auto
     markerstrokewidth --> 0
     xlims --> extrema(steps)
-    xguide --> raw"$N$ (steps after thermalization)"
+    xguide --> raw"$N$ (steps)"
     yguide --> raw"$M$ (magnetization)"
     guidefontsize --> 10
     tickfontsize --> 8
