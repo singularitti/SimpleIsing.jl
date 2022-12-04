@@ -25,11 +25,6 @@ end
 
 @userplot MagPlot
 @recipe function f(plot::MagPlot)
-    # See http://juliaplots.org/RecipesBase.jl/stable/types/#User-Recipes-2
-    trace = plot.args[end]  # Extract `magnetization` from the args
-    # If we are passed two args, use the first as indices.
-    steps = length(plot.args) == 2 ? plot.args[1] : eachindex(trace)
-    M = map(magnetization, trace)
     size --> (700, 400)
     seriestype --> :scatter
     markersize --> 2
@@ -46,6 +41,11 @@ end
     frame --> :box
     palette --> :tab10
     grid --> nothing
+    # See http://juliaplots.org/RecipesBase.jl/stable/types/#User-Recipes-2
+    trace = plot.args[end]  # Extract `magnetization` from the args
+    # If we are passed two args, use the first as indices.
+    steps = length(plot.args) == 2 ? plot.args[1] : eachindex(trace)
+    M = map(magnetization, trace)
     _zero = zero(eltype(M))
     @series begin
         label --> "spin up"
@@ -59,8 +59,6 @@ end
 
 @userplot ParamPlot
 @recipe function f(plot::ParamPlot)
-    # See http://juliaplots.org/RecipesBase.jl/stable/types/#User-Recipes-2
-    𝐉, 𝐛 = plot.args  # Extract `𝐉` and `𝐛` from the args
     size --> (700, 400)
     markersize --> 2
     markerstrokecolor --> :auto
@@ -75,6 +73,8 @@ end
     frame --> :box
     palette --> :tab20
     grid --> nothing
+    # See http://juliaplots.org/RecipesBase.jl/stable/types/#User-Recipes-2
+    𝐉, 𝐛 = plot.args  # Extract `𝐉` and `𝐛` from the args
     for type in (:scatter, :path)
         @series begin
             seriestype --> type
@@ -85,8 +85,6 @@ end
 
 @userplot CorPlot
 @recipe function f(plot::CorPlot)
-    # See http://juliaplots.org/RecipesBase.jl/stable/types/#User-Recipes-2
-    𝐳, 𝐀 = plot.args  # Extract `𝐉` and `𝐛` from the args
     size --> (700, 400)
     markersize --> 2
     markerstrokecolor --> :auto
@@ -102,5 +100,7 @@ end
     frame --> :box
     palette --> :tab20
     grid --> nothing
+    # See http://juliaplots.org/RecipesBase.jl/stable/types/#User-Recipes-2
+    𝐳, 𝐀 = plot.args  # Extract `𝐉` and `𝐛` from the args
     return 𝐳, 𝐀
 end
