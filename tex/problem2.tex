@@ -182,9 +182,9 @@ The mean value of the magnetization after thermalization is around \(-0.78\).
     \includegraphics[width=0.9\textwidth]{basic_J=0.41_mag_t>1000}
     \caption{Magnetization of a \(64 \times 64\) array of ferromagnetic atoms in thermal
         equilibrium and in the absence of an external magnetic field as a function of
-        simulation timesteps (\(t\) from \(1000\) to \(5000\)). The temperature is well
-        above the critical temperature. The mean value of the magnetization after
-        thermalization is plotted in a lighter color.}
+        simulation timesteps (\(t\) from \(1000\) to \(5000\)). The temperature
+        (\(J = 0.41\)) is well above the critical temperature. The mean value of the
+        magnetization after thermalization is plotted in a lighter color.}
     \label{fig:mag_J=0.41}
 \end{figure}
 
@@ -199,6 +199,50 @@ a system with zero net magnetization.
 We plot the magnetization as a function of time in Figure~\ref{fig:mag_J=0.41}.
 As it shows, the mean value of spin-up is \(0.155\), and that of spin-down is \(-0.14\).
 So the total mean value will be around \(0\), as expected.
+
+However, if we select a temperature that is not that far from the critical temperature,
+we may have net magnetization larger than zero even after \(5000\) steps.
+For example, now we choose \(J = 0.435\), which is close to \(J_c\), and redo the
+simulation.
+If we plot the magnetization as a function of time in Figure~\ref{fig:mag_J=0.435},
+we can see even after \(5000\) steps, the values of spin-up and spin-down still do
+not converge. Thus, no thermal equilibrium is achieved in this time evolution.
+In conclusion, we are observing the critical slowing down of the \code{Basic}
+Metropolis algorithm.
+
+\begin{figure}[hbt]
+    \centering
+    \includegraphics[width=0.9\textwidth]{basic_J=0.435_mag_t>1000}
+    \caption{Magnetization of a \(64 \times 64\) array of ferromagnetic atoms in the absence
+        of an external magnetic field as a function of simulation timesteps (\(t\) from
+        \(1000\) to \(5000\)). The temperature (\(J = 0.41\) is only a little higher than
+        the critical temperature. The mean value of the magnetization of these steps is
+        plotted in a lighter color. No thermal equilibrium is achieved within \(5000\)
+        steps.}
+    \label{fig:mag_J=0.435}
+\end{figure}
+
+\begin{figure}[hbt]
+    \centering
+    \begin{subfigure}{0.49\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{basic_J=0.41_t=5000}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.49\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{basic_J=0.435_t=5000}
+    \end{subfigure}
+    \caption{Magnetization pattern of a \(64 \times 64\) array of ferromagnetic atoms in the
+        absence of an external magnetic field at \(t = 5000\), with \(J = 0.41\) (left) and
+        \(J = 0.435\) (right).}
+    \label{fig:t_5000}
+\end{figure}
+
+We plot the magnetization patterns of the lattice at \(t = 5000\) for both \(J\) values
+mentioned above in Figure~\ref{fig:t_5000}. As we can see, for the \(J = 0.41\) case, the
+distribution of up and down spins are more uniform, while for the \(J = 0.435\) case, there
+are clearly clusters of up and down spins, leading to net magnetization.
 
 \begin{algorithm}
     \caption{The Swendsen--Wang algorithm for simulating the Ising model.}
