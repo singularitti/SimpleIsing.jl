@@ -215,9 +215,9 @@ Metropolis algorithm.
     \includegraphics[width=0.9\textwidth]{basic_J=0.435_mag_t>1000}
     \caption{Magnetization of a \(64 \times 64\) array of ferromagnetic atoms in the absence
         of an external magnetic field as a function of simulation timesteps (\(t\) from
-        \(1000\) to \(5000\)). The temperature (\(J = 0.41\) is only a little higher than
-        the critical temperature. The mean value of the magnetization of these steps is
-        plotted in a lighter color. No thermal equilibrium is achieved within \(5000\)
+        \(1000\) to \(5000\)). The temperature (\(J = 0.435\) is only a little higher than
+        the critical temperature. The mean values of the magnetization of these steps are
+        plotted in lighter colors. No thermal equilibrium is achieved within \(5000\)
         steps.}
     \label{fig:mag_J=0.435}
 \end{figure}
@@ -282,6 +282,24 @@ every ``bond'' is closed.
         end
     \end{juliacode}
 \end{algorithm}
+
+\begin{figure}[hbt]
+    \centering
+    \includegraphics[width=0.9\textwidth]{cluster_J=0.435_mag_t>1000}
+    \caption{Magnetization of a \(64 \times 64\) array of ferromagnetic atoms in the absence
+        of an external magnetic field as a function of simulation timesteps (\(t\) from
+        \(1000\) to \(5000\)). The temperature (\(J = 0.435\)) is only a little higher than
+        the critical temperature. The mean values of the magnetization of these steps are
+        plotted in lighter colors. The simulation is done using the \code{SwendsenWang}
+        algorithm.}
+    \label{fig:mag_J=0.435_cluster}
+\end{figure}
+
+Then we use the cluster (Swendsen--Wang) algorithm to calculate the magnetization as a
+function of time for the \(J = 0.435\) case. The results are plotted in
+Figure~\ref{fig:mag_J=0.435_cluster}. As shown in the figure, the magnetization is rapidly
+switching between net positive and negative states, and the averages of these states are
+\(0.444\) and \(-0.44\), converging to zero much faster than the \code{Basic} algorithm.
 
 \subsection{Measuring this observable}
 
