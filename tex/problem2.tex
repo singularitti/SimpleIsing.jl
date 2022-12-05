@@ -129,7 +129,7 @@ as shown in Figure~\ref{fig:cor_N=32_bin=20_jack}.
 \subsection{Determining the correlation length}
 
 In \(\eqref{eq:Sigmazbar}\), \(b\) is the correlation length, which should grow as
-\(J \rightarrow J_c\).
+\(J \to J_c\).
 
 \Question{} You can fit your data to the form of \(\eqref{eq:Sigmazbar}\) to find \(b\)
 using the curve fit function \code{curve_fit} from
@@ -150,17 +150,23 @@ to Figure~\ref{fig:cor_N=32_bin=20_jack} as solid lines.
 We can see they match our raw values of \(\expval{\Sigma(z)}\) pretty well.
 
 To better observe the relation between fitted values of \(b\) and parameter \(J\),
-we plot them in Figure~\ref{fig:b_J_n=32}.
+we plot them in Figure~\ref{fig:b_J}.
 Apparently, as temperature increases (\(J\) decreases), the correlation length \(b\)
 decreases. The closer to the critical temperature \(T_c\), the larger the correlation
 length will be. Because at \(T_c\), the correlation length is infinite.
-At \(J = 0.435\), \(b \approx 21.0326\), which is already close to the size of the lattice.
+At \(J = 0.435\), \(b\) is already close to the size of the lattice.
 It explains the relatively significant correlation in Figure~\ref{fig:cor_N=32_bin=20_jack}.
 
 \begin{figure}[hb]
     \centering
-    \includegraphics[width=0.9\textwidth]{b(J)_N=32}
-    \caption{Fitted parameter \(b\) as a function of \(J\) for a \(32 \times 32\)
-        square lattice.}
-    \label{fig:b_J_n=32}
+    \includegraphics[width=0.9\textwidth]{b_J}
+    \caption{Fitted parameter \(b\) as a function of \(J\) for \(32 \times 32\),
+        \(64 \times 64\), and \(128 \times 128\) square lattices.}
+    \label{fig:b_J}
 \end{figure}
+
+To see how the size of the lattice affects the correlation length, we also do simulations
+on \(64 \times 64\) and \(128 \times 128\) lattices.
+The results are also plotted in Figure~\ref{fig:b_J}.
+So when \(J \to J_c\), \(b\) increases exponentially. We would expect
+when \(J = J_c\), \(b\) will approaches infinity.
