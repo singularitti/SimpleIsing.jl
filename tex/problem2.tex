@@ -61,6 +61,71 @@ error on the average value using the statistical methods of Problem Set 3.
 \(0.430\), \(0.425\). (Note that the critical value is \(J_c = 0.4406868\) and higher
 temperatures correspond to lower values of \(J\), since we wrote \(J = \bar{J} / k_B T\).
 
+\Answer{}
+In the following text, we will set all of the initial spins up and let it evolve.
+There are \(5000\) steps in each simulation, while we only take thermalized steps
+(from \(3000\) to \(5000\)) into account.
+For a fixed lattice size (\(32\) for example) and a fixed \(J\),
+we calculate \(\Sigma(z)\) for each configuration and average them to obtain the
+ensemble average \(\expval{\Sigma(z)}\).
+We also measure the standard deviation of all configurations at each \(z\),
+and use them as the \(y\)-error for our data.
+The results are plotted in Figure~\ref{fig:cor_N=32_bin=1},
+where the scatters are the raw data for \(\expval{\Sigma(z)}\) at each \(z\)
+for each \(J\).
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.9\textwidth]{correlation_N=32_b=1}
+    \caption{Ensemble averages \(\expval{\Sigma(z)}\) as a function of \(z\) for different
+        \(J\) (above \(T_c\)). The system is a \(32 \times 32\) square lattice
+        with all spin up as its initial value.}
+    \label{fig:cor_N=32_bin=1}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{correlation_N=32_b=20}
+    \caption{Ensemble averages \(\expval{\Sigma(z)}\) as a function of \(z\) for different
+        \(J\) (above \(T_c\)). The system is a \(32 \times 32\) square lattice
+        with all spin up as its initial value.
+        We group \(20\) steps into one group, leaving \(3000 / 20 = 150\) groups.}
+    \label{fig:cor_N=32_bin=20}
+\end{figure}
+
+As we can see, as temperature increases (\(J\) decreases), all the values of
+\(\expval{\Sigma(z)}\) tend to decrease.
+This is expected since, above the critical temperature, the correlation length
+decreases as temperature increases.
+And the larger \(z\) is, the lower the correlation is between any two sites.
+Therefore, we can observe a minimum of \(\expval{\Sigma(z)}\) around \(N / 2\).
+We can also observe that the error bars are relatively large, especially for
+larger \(J\)s (lower temperatures).
+We learn from Figure~\ref{fig:mag_J=0.41} and~\ref{fig:mag_J=0.435_cluster}
+that, when the temperature is closer to \(T_c\), there will be more fluctuations.
+In other words, larger standard deviation.
+Also, we are plotting the standard deviation for each configuration,
+not the standard deviation of the means (by grouping several configurations together).
+We can group all configurations into smaller samples, e.g., each of them
+is of size \(20\), as long as the group size is larger but not too far away from
+the integrated autocorrelation time. With this method, the error bars will shrink
+a little, as shown in Figure~\ref{fig:cor_N=32_bin=20}.
+However, they are still a bit large. To further shrink the error bars,
+we can use the jackknife resampling technique.
+The jackknife standard deviation is \(\sqrt{1 / N}\) that of the original dataset,
+as shown in Figure~\ref{fig:cor_N=32_bin=20_jack}.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.9\textwidth]{correlation_N=32_b=20_jack}
+    \caption{Ensemble averages \(\expval{\Sigma(z)}\) as a function of \(z\) for different
+        \(J\) (above \(T_c\)). The system is a \(32 \times 32\) square lattice
+        with all spin up as its initial value.
+        We group \(20\) steps into one group, leaving \(3000 / 20 = 150\) groups.
+        The data and standard deviations are calculated using the jackknife method.}
+    \label{fig:cor_N=32_bin=20_jack}
+\end{figure}
+
 \subsection{Determining the correlation length}
 
 In \(\eqref{eq:Sigmazbar}\), \(b\) is the correlation length, which should grow as
@@ -75,6 +140,5 @@ You should include the statistical error on each correlator point in your inputs
 You don't need to calculate the error on the returned value of the correlation length,
 \(b\), but this can be done with jackknife methods.
 
-
-\Question{} Report on your determination of \(b\) for each of the \(J\) values you
+Report on your determination of \(b\) for each of the \(J\) values you
 simulated. Do you find the expected change in \(b\) as \(J \rightarrow J_c\)?
