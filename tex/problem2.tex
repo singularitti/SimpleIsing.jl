@@ -142,3 +142,25 @@ You don't need to calculate the error on the returned value of the correlation l
 
 Report on your determination of \(b\) for each of the \(J\) values you
 simulated. Do you find the expected change in \(b\) as \(J \rightarrow J_c\)?
+
+\Answer{}
+We fit Equation~\eqref{eq:Sigmazbar} using \code{LsqFit.curve_fit}.
+The fitted function as a function of \(z\) is plotted in Figure~\ref{fig:cor_N=32_bin=1}
+to Figure~\ref{fig:cor_N=32_bin=20_jack} as solid lines.
+We can see they match our raw values of \(\expval{\Sigma(z)}\) pretty well.
+
+To better observe the relation between fitted values of \(b\) and parameter \(J\),
+we plot them in Figure~\ref{fig:b_J_n=32}.
+Apparently, as temperature increases (\(J\) decreases), the correlation length \(b\)
+decreases. The closer to the critical temperature \(T_c\), the larger the correlation
+length will be. Because at \(T_c\), the correlation length is infinite.
+At \(J = 0.435\), \(b \approx 21.0326\), which is already close to the size of the lattice.
+It explains the relatively significant correlation in Figure~\ref{fig:cor_N=32_bin=20_jack}.
+
+\begin{figure}[hb]
+    \centering
+    \includegraphics[width=0.9\textwidth]{b(J)_N=32}
+    \caption{Fitted parameter \(b\) as a function of \(J\) for a \(32 \times 32\)
+        square lattice.}
+    \label{fig:b_J_n=32}
+\end{figure}
