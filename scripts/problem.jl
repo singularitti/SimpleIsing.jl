@@ -51,7 +51,7 @@ function prepare(N, binsize)
 end
 
 for N in [32, 64, 128]  # Sizes of the lattice
-    paramplot!(𝐉, 𝐛; label=raw"$N = " * string(N) * '$')
     𝐚, 𝐛, Σ̄, σ = prepare(N, 20)
+    paramplot!(𝐉, 𝐛; label=raw"$N = " * string(N) * '$')
     plot_correlation(𝐚, 𝐛, Σ̄, N, σ)
 end
