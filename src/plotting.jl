@@ -80,15 +80,20 @@ end
     yguide --> raw"$b$ (parameter)"
     guidefontsize --> 10
     tickfontsize --> 8
-    legend --> :none
+    legendfontsize --> 8
+    legend_foreground_color --> nothing
+    legend_position --> :topleft
     frame --> :box
     palette --> :tab20
     grid --> nothing
-    for type in (:scatter, :path)
-        @series begin
-            seriestype --> type
-            𝐉, 𝐛
-        end
+    @series begin
+        seriestype --> :scatter
+        𝐉, 𝐛
+    end
+    @series begin
+        seriestype --> :path
+        label := ""
+        𝐉, 𝐛
     end
 end
 
