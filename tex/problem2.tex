@@ -170,3 +170,29 @@ on \(64 \times 64\) and \(128 \times 128\) lattices.
 The results are also plotted in Figure~\ref{fig:b_J}.
 So when \(J \to J_c\), \(b\) increases exponentially. We would expect
 when \(J = J_c\), \(b\) will approaches infinity.
+
+We also plot the ensemble averages \(\expval{\Sigma(z)}\) as a function of \(z\) for
+different \(J\) on \(64 \times 64\) and \(128 \times 128\) lattices, as shown in
+Figure~\ref{fig:corr_N}.
+
+\begin{figure}
+    \centering
+    \begin{minipage}[t]{0.9\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{correlation_N=64}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[t]{0.9\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{correlation_N=128}
+    \end{minipage}
+    \caption{Ensemble averages \(\expval{\Sigma(z)}\) as a function of \(z\) for different
+        \(J\) (above \(T_c\)) on \(64 \times 64\) (top figure) and \(128 \times 128\)
+        (bottom figure) lattices. We group \(20\) steps into one group. The data and
+        standard deviations are calculated using the jackknife method.}
+    \label{fig:corr_N}
+\end{figure}
+
+Comparing them with Figure~\ref{fig:cor_N=32_bin=20_jack}, we can see that
+at the same temperature, the correlation decays faster for larger cell sizes.
+For long distances (\(z \approx N / 2\)), the correlation could almost be zero.
