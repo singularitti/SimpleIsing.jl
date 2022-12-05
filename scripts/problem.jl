@@ -14,14 +14,6 @@ const nsteps = 5000
 const nsteps_thermal = 2000  # Number of steps needed to be thermalized
 𝐉 = [0.435, 0.43, 0.425, 0.42, 0.41, 0.4]  # Increasing temperature
 
-function plot_bJ(𝐉, 𝐛, N)
-    plot()  # Start a new figure
-    paramplot!(𝐉, 𝐛)
-    figname = string("b(J)_N=", N, ".pdf")
-    savefig(joinpath(plotsdir(), figname))
-    return current()
-end
-
 function plot_correlation(𝐚, 𝐛, Σ̄, N, σ)
     plot()  # Start a new figure
     𝐳 = 1:N  # Each z
@@ -60,6 +52,6 @@ end
 
 for N in [32, 64, 128]  # Sizes of the lattice
     𝐚, 𝐛, Σ̄, σ = prepare(N, 1)
-    plot_bJ(𝐉, 𝐛, N)
+    paramplot!(𝐉, 𝐛; label=raw"$N = " * string(N) * '$')
     plot_correlation(𝐚, 𝐛, Σ̄, N, σ)
 end
