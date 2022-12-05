@@ -38,7 +38,7 @@ function plot_correlation(𝐚, 𝐛, Σ̄, N, σ)
     return current()  # See https://discourse.julialang.org/t/plotting-from-within-a-loop-using-gr/4435/6
 end
 
-function prepare(N)
+function prepare(N, binsize)
     lattice = Lattice(ones(N, N))
     𝐳 = 1:N  # Each z
     Σ̄ = Matrix{Float64}(undef, length(𝐉), N)  # Mean value of Σ(z) for each J for each N
@@ -48,7 +48,9 @@ function prepare(N)
         Σz = map(spincor(trace), 𝐳)  # Vector of vectors, Σ(z) for each z at each timestep for this J for this N
         𝚺̄z = map(mean, Σz)  # Vector, ensemble average ⟨Σ(z)⟩ for each z for this J for this N
         Σ̄[j, :] = 𝚺̄z
-        𝛔 = map(Base.Fix2(JackknifeAnalysis.std, PartitionSampler(20)) ∘ Population, Σz)  # Vector, std √⟨(Σ(z) - 𝚺̄z)²⟩ for each z for this J for this N
+        𝛔 = map(
+            Base.Fix2(JackknifeAnalysis.std, PartitionSampler(binsize)) ∘ Population, Σz
+        )  # Vector, std √⟨(Σ(z) - 𝚺̄z)²⟩ for each z for this J for this N
         σ[j, :] = 𝛔
         a, b = curve_fit(Modeller(N), 𝐳, 𝚺̄z, [0.2588, 32.537]).param  # Parameters for ⟨Σ(z)⟩
         a, b
@@ -58,7 +60,7 @@ function prepare(N)
 end
 
 for N in [32, 64, 128]  # Sizes of the lattice
-    𝐚, 𝐛, Σ̄, σ = prepare(N)
+    𝐚, 𝐛, Σ̄, σ = prepare(N, 1)
     plot_bJ(𝐉, 𝐛, N)
     plot_correlation(𝐚, 𝐛, Σ̄, N, σ)
 end
