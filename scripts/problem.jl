@@ -12,14 +12,14 @@ end
 const β = 1
 const nsteps = 5000
 const nsteps_thermal = 2000  # Number of steps needed to be thermalized
-𝐉 = [0.435, 0.43, 0.425, 0.42, 0.41, 0.4]  # Increasing temperature
+𝐉 = [0.439, 0.435, 0.43, 0.425, 0.42, 0.41, 0.4]  # Increasing temperature
 
 function plot_correlation(𝐚, 𝐛, Σ̄, N, σ)
     plot()  # Start a new figure
     𝐳 = 1:N  # Each z
     # return map(enumerate(zip(𝐚, 𝐛, 𝐉))) do (j, (a, b, J))
     for (j, (a, b, J)) in enumerate(zip(𝐚, 𝐛, 𝐉))
-        scatter!(𝐳, Σ̄[j, :]; label="", markersize=2, markerstrokewidth=0)
+        scatter!(𝐳, Σ̄[j, :]; label="", markersize=2, markerstrokewidth=0, z_order=:back)
         corplot!(
             𝐳, Modeller(N)(𝐳, [a, b]); yerror=σ[j, :], label=string(raw"$J = ", J, raw" $")
         )
@@ -42,7 +42,7 @@ function prepare(N, binsize)
         𝛔 = map(
             Base.Fix2(JackknifeAnalysis.std, PartitionSampler(binsize)) ∘ Population, Σz
         )  # Vector, std √⟨(Σ(z) - 𝚺̄z)²⟩ for each z for this J for this N
-        σ[j, :] = 𝛔
+        σ[j, :] = 𝛔 ./ sqrt(N)
         a, b = curve_fit(Modeller(N), 𝐳, 𝚺̄z, [0.2588, 32.537]).param  # Parameters for ⟨Σ(z)⟩
         a, b
     end
@@ -51,7 +51,7 @@ function prepare(N, binsize)
 end
 
 for N in [32, 64, 128]  # Sizes of the lattice
-    𝐚, 𝐛, Σ̄, σ = prepare(N, 1)
     paramplot!(𝐉, 𝐛; label=raw"$N = " * string(N) * '$')
+    𝐚, 𝐛, Σ̄, σ = prepare(N, 20)
     plot_correlation(𝐚, 𝐛, Σ̄, N, σ)
 end
