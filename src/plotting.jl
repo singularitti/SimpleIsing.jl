@@ -68,6 +68,8 @@ end
 
 @userplot ParamPlot
 @recipe function f(plot::ParamPlot)
+    # See http://juliaplots.org/RecipesBase.jl/stable/types/#User-Recipes-2
+    𝐉, 𝐛 = plot.args  # Extract `𝐉` and `𝐛` from the args
     size --> (700, 400)
     markersize --> 2
     markerstrokecolor --> :auto
@@ -82,8 +84,6 @@ end
     frame --> :box
     palette --> :tab20
     grid --> nothing
-    # See http://juliaplots.org/RecipesBase.jl/stable/types/#User-Recipes-2
-    𝐉, 𝐛 = plot.args  # Extract `𝐉` and `𝐛` from the args
     for type in (:scatter, :path)
         @series begin
             seriestype --> type
@@ -94,6 +94,8 @@ end
 
 @userplot CorPlot
 @recipe function f(plot::CorPlot)
+    # See http://juliaplots.org/RecipesBase.jl/stable/types/#User-Recipes-2
+    𝐳, 𝐟 = plot.args  # Extract `𝐳` and `𝐟` from the args
     size --> (700, 400)
     markersize --> 2
     markerstrokecolor --> :auto
@@ -109,7 +111,5 @@ end
     frame --> :box
     palette --> :tab20
     grid --> nothing
-    # See http://juliaplots.org/RecipesBase.jl/stable/types/#User-Recipes-2
-    𝐳, 𝐀 = plot.args  # Extract `𝐉` and `𝐛` from the args
-    return 𝐳, 𝐀
+    return 𝐳, 𝐟
 end
