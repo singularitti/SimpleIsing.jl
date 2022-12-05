@@ -1,7 +1,6 @@
 using JackknifeAnalysis: JackknifeAnalysis, Population, PartitionSampler
 using LsqFit: curve_fit
 using Plots
-using ProgressMeter: progress_map
 using SimpleIsing: Lattice, SwendsenWang, Modeller, simulate!, spincor, paramplot!, corplot!
 using Statistics: mean, std
 
@@ -43,7 +42,7 @@ function prepare(N, binsize)
     𝐳 = 1:N  # Each z
     Σ̄ = Matrix{Float64}(undef, length(𝐉), N)  # Mean value of Σ(z) for each J for each N
     σ = Matrix{Float64}(undef, length(𝐉), N)  # Standard deviation of Σ(z) for each J for each N
-    fitted = progress_map(enumerate(𝐉)) do (j, J)
+    fitted = map(enumerate(𝐉)) do (j, J)
         trace = simulate!(lattice, nsteps, β, J, 0, SwendsenWang())[nsteps_thermal:end]
         Σz = map(spincor(trace), 𝐳)  # Vector of vectors, Σ(z) for each z at each timestep for this J for this N
         𝚺̄z = map(mean, Σz)  # Vector, ensemble average ⟨Σ(z)⟩ for each z for this J for this N
