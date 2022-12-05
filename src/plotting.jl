@@ -92,6 +92,7 @@ end
     end
     @series begin
         seriestype --> :path
+        z_order --> :back
         label := ""
         𝐉, 𝐛
     end
