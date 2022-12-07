@@ -11,11 +11,48 @@ and velocity. Of course, you do not need to do the velocity via Monte Carlo, sin
 Maxwell distribution, but it is a negligible computational overhead to include it and it
 keeps the changes in your code small.
 
+\Question{}
 Modify your argon molecular dynamics code to do a Monte Carlo simulation at a temperature of
 \(T = 1.069\) and density \(\rho = 0.75\). Measure the same variables as in Problem Set 2
 and check that your answers agree. Include statistical errors for your results.
 
+\Answer{}
+For the Monte Carlo (MC) calculations, there is no objective definition of time. The notion
+of time is replaced with \emph{sweeps}. For an \(N\)-particle system, one MC sweep
+corresponds to \(N\) attempts of displacement of particle positions, where the Metropolis
+algorithm is employed to decide the acceptance of an atomic displacement. In each attempt,
+one randomly selected atom \(i\) is displaced in each Cartesian direction
+\(\alpha\) by
+%
+\begin{equation}
+    r_{i, \alpha}' = r_{i, \alpha} + 2 \delta (\code{rand()} - 0.5),
+\end{equation}
+%
+where \(i = 1\), \(2\), \(\ldots\), \(N\), and \(\alpha = 1\), \(2\), \(3\),
+and \(\delta\) is a parameter that controls the maximum size of displacements (amplitude)
+and \code{rand()} is a function that will generate a
+uniformly distributed random number between \(0\) and \(1\).
+So, in each trial move, we are going to update the position of the particle
+by a random number between \(-0.5\) and \(0.5\) in each Cartesian direction.
+This is because to satisfy the detailed balance condition, we need an equal chance
+of moving forward and backward.
+
+The value of \(\delta\) is a key
+ingredient of the MC simulation. If it is too large, there follows a high probability
+for the resulting configuration to have high energy, and thus the trial move has a
+large probability of being rejected.
+In this case, we are wasting a lot of time on each sweep.
+On the other hand, if \(\delta\) is too small, the change in
+potential energy is also small so that most trials will be accepted, but the configuration
+space would be sampled poorly since we are not moving too far.
+For all simulations (unless stated otherwise), the
+value of \(\delta\) is adjusted after each sweep so as to get an acceptance ratio (number of
+accepted attempts over the total number of attempts) of \(\approx 0.5\).
+
+\Question{}
 In the molecular dynamics simulations, the autocorrelation times for observables are related
 to physical quantities, since the evolution represents real dynamics of the system. For the
 Monte Carlo, the autocorrelation times reflect the algorithm used for the update. Quote
 measured integrated autocorrelation times for the measured temperature.
+
+\Answer{}
