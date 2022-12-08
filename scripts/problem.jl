@@ -36,7 +36,7 @@ function prepare(N, binsize)
     σ = Matrix{Float64}(undef, length(𝐉), N)  # Standard deviation of Σ(z) for each J for each N
     fitted = map(enumerate(𝐉)) do (j, J)
         trace = simulate!(lattice, nsteps, β, J, 0, SwendsenWang())[nsteps_thermal:end]
-        Σz = map(spincor(trace), 𝐳)  # Vector of vectors, Σ(z) for each z at each timestep for this J for this N
+        Σz = map(spincor(trace), 𝐳)  # Vector of vectors, Σ(z) for each z at each time step for this J for this N
         𝚺̄z = map(mean, Σz)  # Vector, ensemble average ⟨Σ(z)⟩ for each z for this J for this N
         Σ̄[j, :] = 𝚺̄z
         𝛔 = map(

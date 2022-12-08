@@ -107,7 +107,7 @@ As we can see, since the temperature is lower than \(T_c\) (\(J > J_c\)),
 the system will converge to an equilibrium state where there is net magnetization.
 That is, most of the spins on the right are down (white).
 If we plot the magnetization, which is the average value of the spins as a function
-of simulation timesteps, as shown in Figure~\ref{fig:mag_J=0.455}.
+of simulation time steps, as shown in Figure~\ref{fig:mag_J=0.455}.
 The mean value of the magnetization after thermalization is around \(-0.78\).
 
 \begin{figure}[hbt]
@@ -115,7 +115,7 @@ The mean value of the magnetization after thermalization is around \(-0.78\).
     \includegraphics[width=0.9\textwidth]{basic_J=0.455_mag_t>1000}
     \caption{Magnetization of a \(64 \times 64\) array of ferromagnetic atoms in thermal
         equilibrium and in the absence of an external magnetic field as a function of
-        simulation timesteps (\(t\) from \(1000\) to \(5000\)). The temperature is below the
+        simulation time steps (\(t\) from \(1000\) to \(5000\)). The temperature is below the
         critical temperature. The mean value of the magnetization after thermalization is
         plotted in a lighter color.}
     \label{fig:mag_J=0.455}
@@ -126,7 +126,7 @@ The mean value of the magnetization after thermalization is around \(-0.78\).
     \includegraphics[width=0.9\textwidth]{basic_J=0.41_mag_t>1000}
     \caption{Magnetization of a \(64 \times 64\) array of ferromagnetic atoms in thermal
         equilibrium and in the absence of an external magnetic field as a function of
-        simulation timesteps (\(t\) from \(1000\) to \(5000\)). The temperature
+        simulation time steps (\(t\) from \(1000\) to \(5000\)). The temperature
         (\(J = 0.41\)) is well above the critical temperature. The mean value of the
         magnetization after thermalization is plotted in a lighter color.}
     \label{fig:mag_J=0.41}
@@ -148,7 +148,7 @@ So the total mean value will be around \(0\), as expected.
     \centering
     \includegraphics[width=0.9\textwidth]{basic_J=0.435_mag_t>1000}
     \caption{Magnetization of a \(64 \times 64\) array of ferromagnetic atoms in the absence
-        of an external magnetic field as a function of simulation timesteps (\(t\) from
+        of an external magnetic field as a function of simulation time steps (\(t\) from
         \(1000\) to \(5000\)). The temperature (\(J = 0.435\) is only a little higher than
         the critical temperature. The mean values of the magnetization of these steps are
         plotted in lighter colors. No thermal equilibrium is achieved within \(5000\)
@@ -211,7 +211,7 @@ For the cluster algorithm, we need to adopt a recursive scheme, as shown in
 Snippet~\ref{lst:cluster}. The recursive spin-flipping method is defined in
 Snippet~\ref{lst:recur}.
 
-In each timestep, we randomly select one atom, flip its spin, and for each of its four
+In each time step, we randomly select one atom, flip its spin, and for each of its four
 neighbors, see if it has a ``link'' connecting the spins (i.e., the ``bond'' is \emph{open}).
 If so, flip that spin with probability \(P = 1 - \exp(-2J)\).
 Recursively repeat these steps until we have reached the end of the tree where
@@ -243,7 +243,7 @@ switching between net positive and negative states, and the averages of these st
     \centering
     \includegraphics[width=0.9\textwidth]{cluster_J=0.435_mag_t>1000}
     \caption{Magnetization of a \(64 \times 64\) array of ferromagnetic atoms in the absence
-        of an external magnetic field as a function of simulation timesteps (\(t\) from
+        of an external magnetic field as a function of simulation time steps (\(t\) from
         \(1000\) to \(5000\)). The temperature (\(J = 0.435\)) is only a little higher than
         the critical temperature. The mean values of the magnetization of these steps are
         plotted in lighter colors. The simulation is done using the \code{SwendsenWang}
