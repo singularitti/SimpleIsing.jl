@@ -24,11 +24,12 @@ algorithm is employed to decide the acceptance of an atomic displacement. In eac
 one randomly selected atom \(i\) is displaced in each Cartesian direction
 \(\alpha\) by
 %
-\begin{equation}
-    r_{i, \alpha}' = r_{i, \alpha} + 2 \delta (\code{rand()} - 0.5),
+\begin{equation}\label{eq:ri}
+    r_{i, \alpha}' = r_{i, \alpha} + \delta (\code{rand()} - 0.5),
 \end{equation}
 %
 where \(i = 1\), \(2\), \(\ldots\), \(N\), and \(\alpha = 1\), \(2\), \(3\),
+and \(r_{i, \alpha}'\) is the new trial position of the particle in the next timestep,
 and \(\delta\) is a parameter that controls the maximum size of displacements (amplitude)
 and \code{rand()} is a function that will generate a
 uniformly distributed random number between \(0\) and \(1\).
@@ -47,7 +48,23 @@ potential energy is also small so that most trials will be accepted, but the con
 space would be sampled poorly since we are not moving too far.
 For all simulations (unless stated otherwise), the
 value of \(\delta\) is adjusted after each sweep so as to get an acceptance ratio (number of
-accepted attempts over the total number of attempts) of \(\approx 0.5\).
+accepted attempts over the total number of attempts) of approximately \(0.5\).
+
+A more sophisticated solution is also to update the velocity of the particle
+at the same time as we update its position. So that we could keep the concept of
+``timestep'' and wrap it in the same application programming interface (API)
+as the Verlet algorithm.
+That is, rewrite Equation~\eqref{eq:ri} as
+%
+\begin{align}
+    v_{i, \alpha}' & = v_{i, \alpha} + \delta (\code{rand()} - 0.5), \\
+    r_{i, \alpha}' & = r_{i, \alpha} + v_{i, \alpha}' \Delta t,
+\end{align}
+%
+where \(\Delta t\) is the width of each timestep.
+
+Of course, in this simulation, we still need to apply the periodic boundary conditions.
+That is,
 
 \Question{}
 In the molecular dynamics simulations, the autocorrelation times for observables are related
