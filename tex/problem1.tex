@@ -62,6 +62,25 @@ That is, rewrite Equation~\eqref{eq:ri} as
 \end{align}
 %
 where \(\Delta t\) is the width of each time step.
+However, we need to be careful when adjusting these parameters (i.e., \(\delta\) and
+\(\Delta t\)). The change in total energy is now
+%
+\begin{align}
+    \sum_{\substack{i, j \\ j \neq i}} \bigl(u'(r_{ij}) - u(r_{ij})\bigr),\label{eq:dU} \\
+    \Delta U & = U' - U = \frac{1}{2}
+    \Delta K & = K' - K = \frac{1}{2} m \bigl(v_{i, \alpha}'^2 - v_{i, \alpha}^2\bigr),
+\end{align}
+%
+note that the change in the potential energy is much more complicated than that of the
+kinetic energy since when we update the position of one particle, the distances
+between it and all the rest particles have changed.
+In the~\eqref{eq:ri} case, only~\eqref{eq:dU} is considered.
+So, if \(\delta\) and \(\Delta t\) are not tuned, we could result in one trial move.
+Then the difference between \(\Delta U\) and \(\Delta K\) will be huge, resulting in a
+biased change in total energy and a low acceptance rate.
+
+However, this solution is slow, so we do not adopt it here.
+
 
 Of course, in this simulation, we still need to apply the periodic boundary conditions.
 That is,
