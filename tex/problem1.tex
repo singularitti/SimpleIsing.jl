@@ -57,8 +57,8 @@ as the Verlet algorithm.
 That is, rewrite Equation~\eqref{eq:ri} as
 %
 \begin{align}
-    v_{i, \alpha}' & = v_{i, \alpha} + \delta (\code{rand()} - 0.5), \\
-    r_{i, \alpha}' & = r_{i, \alpha} + v_{i, \alpha}' \Delta t,
+    v_{i, \alpha}' & = v_{i, \alpha} + \delta (\code{rand()} - 0.5),\label{eq:vnew} \\
+    r_{i, \alpha}' & = r_{i, \alpha} + v_{i, \alpha}' \Delta t,\label{eq:rnew}
 \end{align}
 %
 where \(\Delta t\) is the width of each time step.
@@ -76,13 +76,53 @@ between it and all the rest particles have changed.
 In the~\eqref{eq:ri} case, only~\eqref{eq:dU} is considered.
 So, if \(\delta\) and \(\Delta t\) are not tuned, we could result in one trial move.
 Then the difference between \(\Delta U\) and \(\Delta K\) will be huge, resulting in a
-biased change in total energy and a low acceptance rate.
+biased change in total energy and a low acceptance ratio.
 
-However, this solution is slow, so we do not adopt it here.
-
-
+However, this solution is too tricky, so we do not adopt it here.
+What we used is a more flexible solution, that is, adjusting position and velocity
+with two independent parameters. Rewrite Equations~\eqref{eq:vnew} and~\eqref{eq:rnew} as
+%
+\begin{align}
+    v_{i, \alpha}' & = v_{i, \alpha} + \delta_v (\code{rand()} - 0.5), \\
+    r_{i, \alpha}' & = r_{i, \alpha} + \delta_r (\code{rand()} - 0.5),
+\end{align}
+%
+where the two parameters \(\delta_v\) and \(\delta_r\) are controlled by us according to
+the simulation process. The complete algorithm adopted is listed in
+Snippet~\ref{lst:take_one_step}.
+%
+\begin{algorithm}
+    \caption{The Metropolis--Hastings algorithm for sampling the phase space in a canonical
+        ensemble of the liquid argon system.}
+    \label{lst:take_one_step}
+    \begin{juliacode}
+        function take_one_step!(particles, box::Box, δv, δr, integrator::MetropolisHastings)
+            for (i, particle) in enumerate(particles)
+                r = rand(3) .- 0.5  # Random numbers from -0.5 to 0.5
+                velocity = particle.velocity .+ δv .* r
+                coordinates = particle.coordinates .+ δr .* r
+                map!(Base.Fix2(mod, box.side_length), coordinates, coordinates)
+                new_particle = Particle(coordinates, velocity)
+                new_particles = map(enumerate(particles)) do (j, old_particle)
+                    j == i ? new_particle : old_particle
+                end
+                ΔU = potential_energy(new_particles) - potential_energy(particles)
+                ΔK = kinetic_energy(new_particle) - kinetic_energy(particle)
+                ΔE = ΔU + ΔK
+                P = exp(-integrator.β * ΔE)
+                if P > rand()
+                    particles[i] = new_particle
+                end
+            end
+            return particles
+        end
+    \end{juliacode}
+\end{algorithm}
+%
 Of course, in this simulation, we still need to apply the periodic boundary conditions.
-That is,
+And in reality, we also have a few lines of code to check the acceptance ratio to be
+around \(0.5\).
+
 
 \Question{}
 In the molecular dynamics simulations, the autocorrelation times for observables are related
