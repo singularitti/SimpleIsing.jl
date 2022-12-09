@@ -66,7 +66,7 @@ However, we need to be careful when adjusting these parameters (i.e., \(\delta\)
 \(\Delta t\)). The change in total energy is now
 %
 \begin{align}
-    \Delta U & = U' - U = \frac{1}{2} = \sum_{\substack{i, j \\ j \neq i}} \bigl(u'(r_{ij}) - u(r_{ij})\bigr),\label{eq:dU} \\
+    \Delta U & = U' - U = \frac{1}{2} = \sum_{\substack{i, j                            \\ j \neq i}} \bigl(u'(r_{ij}) - u(r_{ij})\bigr),\label{eq:dU} \\
     \Delta K & = K' - K = \frac{1}{2} m \bigl(v_{i, \alpha}'^2 - v_{i, \alpha}^2\bigr),
 \end{align}
 %
@@ -91,7 +91,7 @@ where the two parameters \(\delta_v\) and \(\delta_r\) are controlled by us acco
 the simulation process. The complete algorithm adopted is listed in
 Snippet~\ref{lst:take_one_step}.
 %
-\begin{algorithm}
+\begin{algorithm}[H]
     \caption{The Metropolis--Hastings algorithm for sampling the phase space in a canonical
         ensemble of the liquid argon system.}
     \label{lst:take_one_step}
@@ -123,10 +123,43 @@ Of course, in this simulation, we still need to apply the periodic boundary cond
 And in reality, we also have a few lines of code to check the acceptance ratio to be
 around \(0.5\).
 
+So how to choose \(\delta_r\) and \(\delta_v\)? One way is to check how large
+a stride was in our Verlet molecular dynamics simulation and set comparable values
+for them.
+
+With that in mind, we plot the simulation for \(3805\) steps with each time step (even
+though it is not actually used) as \(0.02\), as shown in Figure~\ref{fig:mcmd}.
+The initial values of \(\delta_v\) and \(\delta_r\) are \(0.5\) and \(0.05\),
+respectively. We changed \(\delta_v\) and \(\delta_r\) in the latter part of the
+simulation (around \(t = 60\) and \(t = 65\)) to approximate to better results.
+%
+\begin{figure}
+    \centering
+    \includegraphics[width=0.9\textwidth]{mcmd}
+    \caption{The potential, kinetic, and total energies of a Monte Carlo simulation of
+        liquid argon using the Metropolis--Hastings algorithm.
+        The initial values of \(\delta_v\) and \(\delta_r\) are \(0.5\) and \(0.05\),
+        respectively. We changed \(\delta_v\) and \(\delta_r\) in the latter part of the
+        simulation (around \(t = 60\) and \(t = 65\)) to approximate to better results.}
+    \label{fig:mcmd}
+\end{figure}
+%
+And the temperature during this simulation is plotted in Figure~\ref{fig:mc_T}.
+However, as stated, we did not converge to a value of around \(T = 1.073\), but
+around \(2.10\) (considering only steps from \(1000\) to \(3000\)).
+We will use this data in the following text as the foundation of our analysis.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.9\textwidth]{mc_T}
+    \caption{The temperature of a Monte Carlo simulation of
+        liquid argon using the Metropolis--Hastings algorithm.}
+    \label{fig:mc_T}
+\end{figure}
 
 \Question{}
 In the molecular dynamics simulations, the autocorrelation times for observables are related
-to physical quantities, since the evolution represents real dynamics of the system. For the
+to physical quantities, since the evolution represents the real dynamics of the system. For the
 Monte Carlo, the autocorrelation times reflect the algorithm used for the update. Quote
 measured integrated autocorrelation times for the measured temperature.
 
