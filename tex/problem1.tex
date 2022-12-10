@@ -162,6 +162,36 @@ as in Problem Set 2.
     \label{fig:mc_T}
 \end{figure}
 
+From Figure~\ref{fig:MD_tau_temperature} we can see that
+the integrated autocorrelation time for the temperature is \(\tau_T \approx 6\),
+therefore if we choose \(N = 28\) data as our sample size, then for the whole \(M = 2000\)
+data, there will be \(M / N \approx 71\) independent samples.
+Then the true variance of the means of temperature is
+%
+\begin{equation}
+    \hat{\mathbb{V}}_N(T) = \frac{ 1 }{ M/N - 1 }
+    \sum_{\eta=1}^{M/N} (\bar{T}_\eta - \barhat{T})^2 \approx 8.67456 \times 10^{-4}.
+\end{equation}
+%
+And the true standard deviation of the data is
+%
+\begin{equation}
+    \hat{\mathbb{V}}(T) = \frac{1}{M - 1} \sum_{i=1}^M (T_i - \barhat{T})^2
+    \approx 2.0633 \times 10^{-3}.
+\end{equation}
+%
+They satisfy the following equation
+%
+\begin{equation}
+    \hat{\mathbb{V}}_N(T) = \frac{ 2 \hat{\tau}_T }{ N } \hat{\mathbb{V}}(T).
+\end{equation}
+%
+We can verify it is roughly correct:
+%
+\begin{equation}
+    8.67456 \times 10^{-4} \approx \frac{2 \times 6}{28} 2.0633 \times 10^{-3}.
+\end{equation}
+
 \Question{}
 In the molecular dynamics simulations, the autocorrelation times for observables are related
 to physical quantities, since the evolution represents the real dynamics of the system. For
