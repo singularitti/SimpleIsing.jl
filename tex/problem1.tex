@@ -132,6 +132,7 @@ though it is not actually used) as \(0.02\), as shown in Figure~\ref{fig:mcmd}.
 The initial values of \(\delta_v\) and \(\delta_r\) are \(0.5\) and \(0.05\),
 respectively. We changed \(\delta_v\) and \(\delta_r\) in the latter part of the
 simulation (around \(t = 60\) and \(t = 65\)) to approximate to better results.
+As we can see, after \(1000\) steps, the system is well-thermalized.
 %
 \begin{figure}
     \centering
@@ -148,19 +149,46 @@ And the temperature during this simulation is plotted in Figure~\ref{fig:mc_T}.
 However, as stated, we did not converge to a value of around \(T = 1.073\), but
 around \(2.10\) (considering only steps from \(1000\) to \(3000\)).
 We will use this data in the following text as the foundation of our analysis.
+The estimated pressure is \(\beta P / \rho \approx 0.16345\), not \(1.0004\)
+as in Problem Set 2.
 
 \begin{figure}
     \centering
     \includegraphics[width=0.9\textwidth]{mc_T}
     \caption{The temperature of a Monte Carlo simulation of
-        liquid argon using the Metropolis--Hastings algorithm.}
+        liquid argon using the Metropolis--Hastings algorithm.
+        We will only use the data from \(t = 20\) (the \(1000\)th step)
+        to \(t = 60\) (the \(3000\)th step) in the following analysis.}
     \label{fig:mc_T}
 \end{figure}
 
 \Question{}
 In the molecular dynamics simulations, the autocorrelation times for observables are related
-to physical quantities, since the evolution represents the real dynamics of the system. For the
-Monte Carlo, the autocorrelation times reflect the algorithm used for the update. Quote
-measured integrated autocorrelation times for the measured temperature.
+to physical quantities, since the evolution represents the real dynamics of the system. For
+the Monte Carlo, the autocorrelation time reflects the algorithm used for the update. Quote
+measured integrated autocorrelation time for the measured temperature.
 
 \Answer{}
+The integrated autocorrelation time for the measured temperature is plotted in
+Figure~\ref{fig:MD_tau_temperature}.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.9\textwidth]{MD_tau_temperature}
+    \caption{The integrated autocorrelation time for the measured temperature
+        in our Monte Carlo simulation.}
+    \label{fig:MD_tau_temperature}
+\end{figure}
+
+Since we only select \(2000\) steps, the integrated autocorrelation time
+cannot be too large.
+The integrated autocorrelation time for the potential energy, kinetic energy,
+and total energy are plotted in Figure~\ref{fig:MD_tau_energy}.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.9\textwidth]{MD_tau_energy}
+    \caption{The integrated autocorrelation time for the potential energy, kinetic energy,
+        and total energy.}
+    \label{fig:MD_tau_energy}
+\end{figure}
