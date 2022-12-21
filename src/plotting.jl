@@ -16,7 +16,7 @@ export magplot, paramplot, corplot
     tickfontsize --> 8
     legendfontsize --> 8
     color --> :binary
-    colorbar --> false
+    colorbar --> :none
     frame --> :box
     aspect_ratio --> :equal
     margins --> (0, :mm)  # See https://github.com/JuliaPlots/Plots.jl/issues/4522#issuecomment-1318511879
