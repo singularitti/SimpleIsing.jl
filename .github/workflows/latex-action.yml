@@ -16,13 +16,14 @@ jobs:
           working_directory: tex
           root_file: main.tex
           latexmk_shell_escape: true
-          latexmk_use_lualatex: true
+          latexmk_use_xelatex: true
           extra_system_packages: "py-pygments"
           extra_fonts: /usr/share/fonts/JuliaMono-ttf/*.ttf
       - uses: actions/upload-artifact@v3
         with:
           name: PDF
           path: tex/main.pdf
+          if-no-files-found: error
       - uses: AButler/upload-release-assets@v2.0
         with:
           files: tex/main.pdf
