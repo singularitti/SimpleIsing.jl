@@ -23,7 +23,7 @@ jobs:
           latexmk_shell_escape: true
           latexmk_use_lualatex: true
           extra_system_packages: "py-pygments"
-          extra_fonts: JuliaMono-ttf/*.ttf
+          extra_fonts: /usr/share/fonts/JuliaMono-ttf/*.ttf
       - uses: actions/upload-artifact@v3
         with:
           name: PDF
