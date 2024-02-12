@@ -6,10 +6,8 @@ DocMeta.setdocmeta!(SimpleIsing, :DocTestSetup, :(using SimpleIsing); recursive=
 makedocs(;
     modules=[SimpleIsing],
     authors="singularitti <singularitti@outlook.com> and contributors",
-    repo="https://github.com/singularitti/SimpleIsing.jl/blob/{commit}{path}#{line}",
     sitename="SimpleIsing.jl",
     format=Documenter.HTML(;
-        prettyurls=get(ENV, "CI", "false") == "true",
         canonical="https://singularitti.github.io/SimpleIsing.jl",
         edit_link="main",
         assets=String[],
