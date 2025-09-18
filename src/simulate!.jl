@@ -45,17 +45,11 @@ function simulate!(lattice::Lattice, n, β, J, B, alg::Algorithm)
     return append!(init, steps)
 end
 
-function flipspin(spin)
-    a, b = states(typeof(spin))
-    return spin == a ? b : a
-end
-function flipspin(lattice::Lattice, index::CartesianIndex)
-    a, b = states(eltype(lattice))
-    return lattice[index] == a ? b : a
-end
+flipspin(spin::Sign) = -spin
+flipspin(lattice::Lattice, index::CartesianIndex) = -lattice[index]
 # Flip a spin in-place
 function flipspin!(lattice::Lattice, index::CartesianIndex)
-    spin = flipspin(lattice, index)
+    spin = -lattice[index]
     lattice[index] = spin
     return spin
 end
