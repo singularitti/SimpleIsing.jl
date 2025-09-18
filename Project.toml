@@ -6,11 +6,13 @@ version = "0.1.0"
 [deps]
 LsqFit = "2fda8390-95c7-5789-9bda-21331edee243"
 RecipesBase = "3cdcf5f2-1ef4-517c-9805-6587b60abb01"
+SignType = "9609daed-dfca-48a0-b6c8-6de1ae2e1f05"
 Statistics = "10745b16-79ce-11e8-11f9-7d13ad32a3b2"
 
 [compat]
 LsqFit = "0.13, 0.14, 0.15"
 RecipesBase = "1"
+SignType = "0.1"
 julia = "1"
 
 [extras]
