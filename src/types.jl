@@ -1,12 +1,10 @@
-export Lattice, states
+using SignType: Sign
 
-struct Lattice{T} <: AbstractMatrix{T}
+export Lattice
+
+struct Lattice{T<:Sign} <: AbstractMatrix{T}
     spins::Matrix{T}
 end
-
-states(::Type{T}) where {T<:Number} = (one(T), -one(T))
-
-isvalid(spin) = spin in states(typeof(spin))
 
 Base.parent(lattice::Lattice) = lattice.spins
 
